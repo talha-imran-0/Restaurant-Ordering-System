@@ -1,1 +1,11 @@
-<?php\n// Placeholder for includes/header.php.\n?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Bites</title>
+    <link rel="stylesheet" href="/php/Restaurant-Ordering-System/assets/css/style.css">
+</head>
+
+<body>
