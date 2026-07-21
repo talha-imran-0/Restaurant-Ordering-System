@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urban Bites</title>
-    <link rel="icon" href="/php/Restaurant-Ordering-System/assets/uploads/logo/favicon.png">
+    <link rel="icon" href="/php/Restaurant-Ordering-System/assets/uploads/logo/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="/php/Restaurant-Ordering-System/assets/css/style.css">
 </head>
 
