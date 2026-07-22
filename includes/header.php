@@ -7,6 +7,7 @@
     <title>Urban Bites</title>
     <link rel="icon" href="/php/Restaurant-Ordering-System/assets/uploads/logo/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="/php/Restaurant-Ordering-System/assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body>
