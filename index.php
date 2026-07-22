@@ -330,6 +330,45 @@ include "includes/navbar.php";
 </section>
 
 <!-- Why Choose Us Section End -->
+
+<!-- Testimonials Section Starts-->
+
+<section class="testimonials">
+    <div class="container">
+        <div class="section-title">
+            <span>TESTIMONIALS</span>
+            <h2>What Our Customers Say</h2>
+        </div>
+        <div class="testimonial-grid">
+
+            <!-- Customer 1 -->
+            <div class="testimonial-card">
+                <img src="assets/images/testimonials/customer-1.jpg" alt="Customer">
+                <h3>Ali Khan</h3>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>The pizza was incredibly delicious and delivered hot.Urban Bites has become my favorite place to order food.</p>
+            </div>
+
+            <!-- Customer 2 -->
+            <div class="testimonial-card">
+                <img src="assets/images/testimonials/customer-2.jpg" alt="Customer">
+                <h3>Sarah Ahmed</h3>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Amazing customer service and excellent food quality.Everything arrived fresh and perfectly packed.</p>
+            </div>
+
+            <!-- Customer 3 -->
+            <div class="testimonial-card">
+                <img src="assets/images/testimonials/customer-3.jpg" alt="Customer">
+                <h3>Usman Malik</h3>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Fast delivery, great taste and affordable prices.I highly recommend Urban Bites to everyone.</p>
+            </div>
+
+        </div>
+    </div>
+</section> 
+<!-- Testimonials Section Ends -->
 <?php
 
 include "includes/footer.php";
