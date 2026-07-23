@@ -10,7 +10,6 @@ include "includes/navbar.php";
 
 
 <!-- Hero Section Starts -->
-
 <section class="hero">
     <div class="container">
         <div class="hero-content">
@@ -330,6 +329,95 @@ include "includes/navbar.php";
 </section>
 
 <!-- Why Choose Us Section End -->
+
+<!-- Testimonials Section Starts-->
+
+<section class="testimonials">
+    <div class="container">
+        <div class="section-title">
+            <span>TESTIMONIALS</span>
+            <h2>What Our Customers Say</h2>
+        </div>
+        <div class="testimonial-grid">
+
+            <!-- Customer 1 -->
+            <div class="testimonial-card">
+                <img src="assets/images/testimonials/customer-1.jpg" alt="Customer">
+                <h3>Ali Khan</h3>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>The pizza was incredibly delicious and delivered hot.Urban Bites has become my favorite place to order food.</p>
+            </div>
+
+            <!-- Customer 2 -->
+            <div class="testimonial-card">
+                <img src="assets/images/testimonials/customer-2.jpg" alt="Customer">
+                <h3>Sarah Ahmed</h3>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Amazing customer service and excellent food quality.Everything arrived fresh and perfectly packed.</p>
+            </div>
+
+            <!-- Customer 3 -->
+            <div class="testimonial-card">
+                <img src="assets/images/testimonials/customer-3.jpg" alt="Customer">
+                <h3>Usman Malik</h3>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Fast delivery, great taste and affordable prices.I highly recommend Urban Bites to everyone.</p>
+            </div>
+
+        </div>
+    </div>
+</section> 
+
+<!-- Testimonials Section Ends -->
+
+<!-- Footer Section Starts -->
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+
+            <div class="footer-box">
+                <img src="assets/uploads/logo/logo-main.png" alt="Urban Bites Logo" class="footer-logo">
+                <p>Urban Bites serves fresh, delicious meals made with quality ingredients.Enjoy fast delivery and an unforgettable dining experience from the comfortof your home.</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-box">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="menu.php">Menu</a></li>
+                    <li><a href="categories.php">Categories</a></li>
+                    <li><a href="about.php">About</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div class="footer-box">
+                <h3>Contact</h3>
+                <p><i class="fa-solid fa-location-dot"></i>Gujranwala, Pakistan</p>
+                <p><i class="fa-solid fa-phone"></i>+92 300 6489664</p>
+                <p><i class="fa-solid fa-envelope"></i>talhaimran.only@gmail.com</p>
+            </div>
+
+            <!-- Socails  -->
+            <div class="footer-box">
+                <h3>Follow Us</h3>
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i>Facebook</a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i>Instagram</a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i>Twitter</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© <?php echo date("Y"); ?> Urban Bites. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section Ends -->
+
 <?php
 
 include "includes/footer.php";
