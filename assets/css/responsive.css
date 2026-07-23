@@ -1,1 +1,606 @@
 /* Placeholder for assets/css/responsive.css. */
+
+   /* LARGE LAPTOP */
+
+@media screen and (max-width:1200px){
+
+    .container{
+        width:95%;
+    }
+
+    .hero-text h1{
+        font-size:44px;
+        line-height:55px;
+    }
+
+    .hero-image img{
+        width:430px;
+    }
+
+}
+
+    /* Laptop  */
+
+@media screen and (max-width:992px){
+
+    /* Navbar  */
+
+    .navbar-content{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        position:relative;
+    }
+
+    .logo img{
+        width:160px;
+    }
+
+    .menu-toggle{
+        display:flex;
+        flex-direction:column;
+        gap:5px;
+        cursor:pointer;
+    }
+
+    .menu-toggle span{
+        width:24px;
+        height:2px;
+        background:#ffffff;
+        border-radius:50px;
+        transition:0.3s;
+    }
+
+    .menu-toggle:hover span{
+        background:#d62828;
+    }
+    .nav-menu{
+        display:none;
+    }
+
+    /* Sidebar  */
+
+    .menu-overlay{
+
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,.55);
+        opacity:0;
+        visibility:hidden;
+        transition:.3s;
+        z-index:998;
+
+    }
+
+    .menu-overlay.active{
+
+        opacity:1;
+        visibility:visible;
+
+    }
+
+    .mobile-sidebar{
+
+        position:fixed;
+        top:0;
+        right:-100%;
+        width:70%;
+        max-width:340px;
+        height:100%;
+        background:#111111;
+        transition:.35s;
+        z-index:999;
+        padding:30px;
+        overflow-y:auto;
+        box-shadow:-5px 0 20px rgba(0,0,0,.4);
+
+    }
+
+    .mobile-sidebar.active{
+
+        right:0;
+
+    }
+
+    .sidebar-header{
+
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:40px;
+
+    }
+
+    .sidebar-header img{
+
+        width:150px;
+
+    }
+
+    #close-menu{
+
+        font-size:40px;
+        cursor:pointer;
+        color:#ffffff;
+
+    }
+
+    .sidebar-menu li{
+
+        margin-bottom:25px;
+
+    }
+
+    .sidebar-menu li a{
+
+        color:#ffffff;
+        font-size:20px;
+        font-weight:bold;
+        transition:.3s;
+
+    }
+
+    .sidebar-menu li a:hover{
+
+        color:#d62828;
+        padding-left:10px;
+
+    }
+
+    .sidebar-login-btn{
+        display:inline-block;
+        background:#d62828;
+        color:#ffffff;
+        padding:12px 30px;
+        border-radius:6px;
+        margin-top:20px;
+        font-weight:bold;
+        transition:.3s;
+    }
+
+    .sidebar-login-btn:hover{
+        background:#b71c1c;
+        color:#ffffff;
+    }
+
+    .mobile-sidebar{
+    display:block;
+    }
+
+    .menu-overlay{
+        display:block;
+    }
+
+    /* Hero  */
+
+    .hero{
+
+        padding:80px 0;
+
+    }
+
+    .hero-content{
+
+        flex-direction:column;
+        text-align:center;
+        gap:50px;
+
+    }
+
+    .hero-text,
+    .hero-image{
+
+        width:100%;
+
+    }
+
+    .hero-image{
+
+        text-align:center;
+
+    }
+
+    .hero-image img{
+
+        width:330px;
+        margin:auto;
+
+    }
+
+    .hero-text h1{
+
+        font-size:42px;
+        line-height:55px;
+
+    }
+
+    .hero-text p{
+
+        font-size:17px;
+
+    }
+
+    .btn{
+
+        margin-bottom:15px;
+
+    }
+
+}
+
+    /* Tablet  */
+
+@media screen and (max-width:768px){
+
+    /* Navbar  */
+
+    .navbar-content{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .logo img{
+        width:150px;
+    }
+
+    .mobile-sidebar{
+        width:75%;
+    }
+
+    /* Hero  */
+
+    .hero{
+        padding:60px 0;
+    }
+
+    .hero-text h4{
+        font-size:16px;
+    }
+
+    .hero-text h1{
+        font-size:36px;
+        line-height:48px;
+    }
+
+    .hero-text p{
+        font-size:16px;
+    }
+
+    .hero-image img{
+        width:340px;
+        max-width:100%;
+    }
+
+    .btn{
+        display:block;
+        width:220px;
+        margin:15px auto;
+        text-align:center;
+    }
+
+    /* Section Headings  */
+
+    .section-heading h2,
+    .section-title h2,
+    .offer-content h2{
+
+        font-size:34px;
+
+    }
+
+    .section-heading p{
+
+        font-size:16px;
+
+    }
+
+    /* Categories  */
+
+    .categories{
+
+        padding:80px 0;
+
+    }
+
+    .categories-grid{
+
+        grid-template-columns:repeat(2,1fr);
+        gap:20px;
+
+    }
+
+    .category-card img{
+
+        height:200px;
+
+    }
+
+    .category-card h3{
+
+        font-size:22px;
+
+    }
+
+    /* Featured Menu  */
+
+    .featured-menu{
+
+        padding:80px 0;
+
+    }
+
+    .menu-grid{
+
+        grid-template-columns:repeat(2,1fr);
+        gap:20px;
+
+    }
+
+    .menu-card img{
+
+        height:210px;
+
+    }
+
+    .menu-content{
+
+        padding:20px;
+
+    }
+
+    .menu-content h3{
+
+        font-size:22px;
+
+    }
+
+    .price{
+
+        font-size:22px;
+
+    }
+
+    /* Offer Menu  */
+
+    .offer-banner{
+
+        padding:90px 20px;
+
+    }
+
+    .offer-content h2{
+
+        font-size:38px;
+        line-height:50px;
+
+    }
+
+    .offer-content p{
+
+        font-size:16px;
+
+    }
+
+    .offer-btn{
+
+        padding:14px 30px;
+
+    }
+
+}
+
+    /* Mobile  */
+
+@media screen and (max-width:576px){
+
+    /* Navbar  */
+
+    .navbar-content{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        flex-direction:row;
+    }
+
+    .logo img{
+        width:140px;
+    }
+
+    .mobile-sidebar{
+        width:80%;
+        padding:25px;
+    }
+
+    .sidebar-header img{
+        width:130px;
+    }
+
+    /* Hero  */
+
+    .hero{
+        padding:40px 0;
+    }
+
+    .hero-content{
+        gap:20px;
+    }
+
+    .hero-text h4{
+        font-size:15px;
+    }
+
+    .hero-text h1{
+        font-size:30px;
+        line-height:40px;
+    }
+
+    .hero-text p{
+        font-size:15px;
+    }
+
+    .hero-image img{
+        width:320px;
+        max-width:100%;
+    }
+
+    .btn{
+        width:100%;
+        margin:12px 0;
+    }
+
+    /* Headings  */
+
+    .section-heading{
+        margin-bottom:40px;
+    }
+
+    .section-heading h2,
+    .section-title h2,
+    .offer-content h2{
+        font-size:28px;
+    }
+
+    .section-heading p,
+    .offer-content p{
+        font-size:15px;
+    }
+
+    /* Categories */
+
+    .categories{
+        padding:70px 0;
+    }
+
+    .categories-grid{
+        grid-template-columns:1fr;
+    }
+
+    .category-card img{
+        height:220px;
+    }
+
+    /* Featured Menu  */
+
+    .featured-menu{
+        padding:70px 0;
+    }
+
+    .menu-grid{
+        grid-template-columns:1fr;
+    }
+
+    .menu-card img{
+        height:220px;
+    }
+
+    /* Offer Menu */
+
+    .offer-banner{
+        padding:70px 15px;
+    }
+
+    .offer-content h2{
+        font-size:30px;
+        line-height:40px;
+    }
+
+    /* Why Choose Us  */
+
+    .why-choose-us{
+        padding:70px 0;
+    }
+
+    .choose-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    /* Testimonials  */
+
+    .testimonials{
+        padding:70px 0;
+    }
+
+    .testimonial-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    /* Footer  */
+
+    .footer{
+        text-align:center;
+        padding:60px 0 20px;
+    }
+
+    .footer-content{
+        grid-template-columns:1fr;
+        gap:35px;
+        justify-items:center;
+        text-align:center;
+    }
+
+    .footer-logo{
+        margin:0 auto 20px;
+    }
+
+    .footer-box:first-child p{
+        max-width:100%;
+        line-height:28px;
+    }
+
+    .footer-box ul{
+        padding:0;
+    }
+
+    .footer-box ul li{
+        margin-bottom:10px;
+    }
+
+    .footer-social{
+        align-items:center;
+    }
+
+    .footer-bottom{
+        margin-top:40px;
+        text-align:center;
+    }
+
+}
+
+    /* Small Mobile  */
+
+@media screen and (max-width:400px){
+
+    .logo img{
+        width:125px;
+    }
+
+    .hero-text h1{
+        font-size:26px;
+        line-height:36px;
+    }
+
+    .hero-image img{
+        width:260px;
+        max-width:100%;
+    }
+    .section-heading h2,
+    .section-title h2,
+    .offer-content h2{
+        font-size:24px;
+    }
+
+    .offer-content p{
+        font-size:14px;
+    }
+
+    .sidebar-header img{
+        width:110px;
+    }
+
+}
