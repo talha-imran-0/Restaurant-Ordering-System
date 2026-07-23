@@ -96,6 +96,22 @@ img {
     color:white !important;
 }
 
+.menu-toggle{
+    display:none;
+}
+
+/* ==========================
+   Mobile Sidebar (Hide on Desktop)
+========================== */
+
+.mobile-sidebar{
+    display:none;
+}
+
+.menu-overlay{
+    display:none;
+}
+
     /* Hero Section Starts */
 
 .hero{
@@ -177,6 +193,7 @@ img {
 .btn-outline:hover {
     background-color: #d62828;
 }
+
     /* Hero Section Ends */
 
     /* Categories Section Start */
@@ -619,73 +636,3 @@ img {
 
 
 
-    /* Queries  */
-
-    /* Hero Section Responsive Queries  */
-@media screen and (max-width:992px){
-
-    .hero-content{
-        flex-direction:column;
-        text-align:center;
-    }
-
-    .hero-text{
-        width:100%;
-        margin-bottom:50px;
-    }
-
-    .hero-image{
-        width:100%;
-        text-align:center;
-    }
-
-    .hero-image img{
-        width:320px;
-    }
-
-}
-
-
-@media screen and (max-width:768px) {
-
-    .navbar-content {
-        flex-direction: column;
-    }
-
-    .logo {
-        margin-bottom: 20px;
-    }
-
-    .nav-menu {
-        flex-direction: column;
-    }
-
-    .nav-menu li {
-        margin: 10px 0;
-    }
-
-    .hero {
-        padding: 60px 0;
-    }
-
-    .hero-text h1 {
-        font-size: 38px;
-        line-height: 50px;
-    }
-
-    .hero-text p {
-        font-size: 18px;
-    }
-
-    .hero-image img {
-        width: 280px;
-    }
-
-    .btn {
-        display: block;
-        width: 220px;
-        margin: 15px auto;
-        text-align: center;
-    }
-
-}
