@@ -46,3 +46,58 @@ sidebarLinks.forEach(function (link) {
     });
 
 });
+
+
+/*=========================================
+        FOOD DETAILS START
+=========================================*/
+
+var minusButton = document.getElementById("minus-btn");
+var plusButton = document.getElementById("plus-btn");
+var quantityInput = document.getElementById("quantity");
+
+if (minusButton && plusButton && quantityInput) {
+
+    minusButton.addEventListener("click", function () {
+
+        var quantity = parseInt(quantityInput.value);
+
+        if (quantity > 1) {
+
+            quantity--;
+
+            quantityInput.value = quantity;
+
+        }
+
+    });
+
+    plusButton.addEventListener("click", function () {
+
+        var quantity = parseInt(quantityInput.value);
+
+        quantity++;
+
+        quantityInput.value = quantity;
+
+    });
+
+}
+
+var addToCartButton = document.querySelector(".btn-primary");
+
+if (addToCartButton) {
+
+    addToCartButton.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        alert("Item added to cart successfully.");
+
+    });
+
+}
+
+/*=========================================
+        FOOD DETAILS END
+=========================================*/

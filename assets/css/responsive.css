@@ -604,3 +604,99 @@
     }
 
 }
+
+/*=========================================
+        FOOD DETAILS RESPONSIVE START
+=========================================*/
+
+@media (max-width: 992px) {
+
+    .food-details-wrapper {
+        gap: 40px;
+    }
+
+    .food-content h2 {
+        font-size: 34px;
+    }
+
+    .food-price {
+        font-size: 30px;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .food-details-wrapper {
+        flex-direction: column;
+    }
+
+    .food-image,
+    .food-content {
+        width: 100%;
+    }
+
+    .food-content {
+        text-align: center;
+        margin-top: 35px;
+    }
+
+    .food-category {
+        margin: 0 auto 20px;
+    }
+
+    .quantity-box {
+        justify-content: center;
+    }
+
+    .food-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .info-item {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .page-banner h1 {
+        font-size: 30px;
+    }
+
+    .food-content h2 {
+        font-size: 28px;
+    }
+
+    .food-price {
+        font-size: 26px;
+    }
+
+    .food-buttons {
+        flex-direction: column;
+    }
+
+    .food-buttons a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .quantity-box button {
+        width: 40px;
+        height: 40px;
+    }
+
+    .quantity-box input {
+        width: 50px;
+        height: 40px;
+    }
+
+}
+
+/*=========================================
+        FOOD DETAILS RESPONSIVE END
+=========================================*/

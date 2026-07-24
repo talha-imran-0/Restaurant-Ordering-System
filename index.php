@@ -108,7 +108,7 @@ include "includes/navbar.php";
                         <span class="price">$12.99</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -122,7 +122,7 @@ include "includes/navbar.php";
                         <span class="price">$13.49</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -136,7 +136,7 @@ include "includes/navbar.php";
                         <span class="price">$10.99</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -150,7 +150,7 @@ include "includes/navbar.php";
                         <span class="price">$13.49</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -164,7 +164,7 @@ include "includes/navbar.php";
                         <span class="price">$8.99</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -178,7 +178,7 @@ include "includes/navbar.php";
                         <span class="price">$18.99</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -192,7 +192,7 @@ include "includes/navbar.php";
                         <span class="price">$4.99</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -206,7 +206,7 @@ include "includes/navbar.php";
                         <span class="price">$14.99</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -220,7 +220,7 @@ include "includes/navbar.php";
                         <span class="price">$14.99</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -234,7 +234,7 @@ include "includes/navbar.php";
                         <span class="price">$12.99</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -248,7 +248,7 @@ include "includes/navbar.php";
                         <span class="price">$5.49</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
 
@@ -262,7 +262,7 @@ include "includes/navbar.php";
                         <span class="price">$12.99</span>
                         <span class="rating">★★★★★</span>
                     </div>
-                    <a href="#" class="menu-btn">Add To Cart</a>
+                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
             </div>
         </div>
