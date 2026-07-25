@@ -6,6 +6,11 @@ require_once "php/Functions.php";
 include "includes/header.php";
 include "includes/navbar.php";
 
+// Get active categories from database 
+$get_categories = mysqli_query($conn, "SELECT * FROM categories WHERE status = 1 ORDER BY id ASC");
+// Get active menu items from database
+$get_menu_items = mysqli_query($conn, "SELECT * FROM menu_items WHERE status = 1 ORDER BY id ASC LIMIT 12");
+
 ?>
 
 
@@ -44,41 +49,15 @@ include "includes/navbar.php";
         </div>
         <div class="categories-grid">
 
-            <!-- Pizza -->
-            <a href="#" class="category-card">
-                <img src="assets/images/categories/pizza.jpg" alt="Pizza">
-                <h3>Pizza</h3>
-            </a>
+            <?php while ($category = mysqli_fetch_assoc($get_categories)) { ?>
 
-            <!-- Burger  -->
-            <a href="#" class="category-card">
-                <img src="assets/images/categories/burger.jpg" alt="Burger">
-                <h3>Burger</h3>
-            </a>
+                <a href="categories.php?id=<?php echo $category['id']; ?>" class="category-card">
+                    <img src="assets/uploads/categories/<?php echo $category['image']; ?> "alt="<?php echo $category['name']; ?>">
+                    <h3><?php echo $category['name']; ?></h3>
+                </a>
+                
+            <?php } ?>
 
-            <!-- Pasta -->
-            <a href="#" class="category-card">
-                <img src="assets/images/categories/pasta.jpg" alt="Pasta">
-                <h3>Pasta</h3>
-            </a>
-
-            <!-- BBQ -->
-            <a href="#" class="category-card">
-                <img src="assets/images/categories/bbq.jpg" alt="BBQ">
-                <h3>BBQ</h3>
-            </a>
-
-            <!-- Drinks -->
-            <a href="#" class="category-card">
-                <img src="assets/images/categories/drinks.jpg" alt="Drinks">
-                <h3>Drinks</h3>
-            </a>
-
-            <!-- Dessert -->
-            <a href="#" class="category-card">
-                <img src="assets/images/categories/dessert.jpg" alt="Dessert">
-                <h3>Dessert</h3>
-            </a>
         </div>
     </div>
 </section>
@@ -97,175 +76,24 @@ include "includes/navbar.php";
 
         <!-- Menu Grid -->
         <div class="menu-grid">
+            <?php while ($menu = mysqli_fetch_assoc($get_menu_items)) { ?>
 
-            <!-- Menu Item 1 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-1.jpg" alt="Pizza Supreme">
-                <div class="menu-content">
-                    <h3>Chocolate Cake</h3>
-                    <p>Soft chocolate sponge topped with rich chocolate cream.</p>
-                    <div class="menu-info">
-                        <span class="price">$12.99</span>
-                        <span class="rating">★★★★★</span>
+                <div class="menu-card">
+                    <img src="assets/uploads/menu/<?php echo $menu['image']; ?> "alt="<?php echo $menu['name']; ?>">
+                    <div class="menu-content">
+                        <h3><?php echo $menu['name']; ?></h3>
+                        <p><?php echo $menu['description']; ?></p>
+                        <div class="menu-info">
+                            <span class="price">$<?php echo number_format($menu['price'], 2); ?></span>
+                            <span class="rating">★★★★★</span>
+                        </div>
+                        <a href="customer/food-details.php?id=<?php echo $menu['id']; ?>" class="menu-btn"> View Details </a>
                     </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
                 </div>
-            </div>
 
-            <!-- Menu Item 2 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-2.jpg" alt="Cheese Burger">
-                <div class="menu-content">
-                    <h3>Cheese Pasta</h3>
-                    <p>Rich cheese sauce pasta with fresh vegetables.</p>
-                    <div class="menu-info">
-                        <span class="price">$13.49</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 3 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-3.jpg" alt="Creamy Pasta">
-                <div class="menu-content">
-                    <h3>Chocolate Shake</h3>
-                    <p>Rich creamy chocolate shake topped with whipped cream.</p>
-                    <div class="menu-info">
-                        <span class="price">$10.99</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 4 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-4.jpg" alt="BBQ Wings">
-                <div class="menu-content">
-                    <h3>Chicken Pizza</h3>
-                    <p>Fresh oven-baked pizza topped with spicy grilled chicken.</p>
-                    <div class="menu-info">
-                        <span class="price">$13.49</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 5 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-5.jpg" alt="Chicken Sandwich">
-                <div class="menu-content">
-                    <h3>Chicken Burger</h3>
-                    <p> Juicy grilled chicken patty with melted cheese and fresh salad.</p>
-                    <div class="menu-info">
-                        <span class="price">$8.99</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 6 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-6.jpg" alt="French Fries">
-                <div class="menu-content">
-                    <h3>Grilled Steak</h3>
-                    <p>Tender grilled steak served with fresh vegetables.</p>
-                    <div class="menu-info">
-                        <span class="price">$18.99</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 7 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-7.jpg" alt="Chicken Pizza">
-                <div class="menu-content">
-                    <h3>Signature Cupcake</h3>
-                    <p>Chocolate cupcake with whipped cream topping.</p>
-                    <div class="menu-info">
-                        <span class="price">$4.99</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 8 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-8.jpg" alt="Beef Steak">
-                <div class="menu-content">
-                    <h3>Shrimp Spaghetti</h3>
-                    <p>Delicious shrimp pasta with a rich tomato-based sauce.</p>
-                    <div class="menu-info">
-                        <span class="price">$14.99</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 9 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-9.jpg" alt="Cold Drink">
-                <div class="menu-content">
-                    <h3>Cheese Pizza</h3>
-                    <p>Classic pizza topped with melted mozzarella cheese.</p>
-                    <div class="menu-info">
-                        <span class="price">$14.99</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 10 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-10.jpg" alt="Chocolate Cake">
-                <div class="menu-content">
-                    <h3>Meg Burger & Fries</h3>
-                    <p> Juicy beef burger with crispy fries.</p>
-                    <div class="menu-info">
-                        <span class="price">$12.99</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 11 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-11.jpg" alt="Ice Cream">
-                <div class="menu-content">
-                    <h3>Fresh Drinks</h3>
-                    <p>Refreshing beverages to quench your thirst.</p>
-                    <div class="menu-info">
-                        <span class="price">$5.49</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
-
-            <!-- Menu Item 12 -->
-            <div class="menu-card">
-                <img src="assets/images/menu/menu-12.jpg" alt="Special Combo">
-                <div class="menu-content">
-                    <h3>Special Grilled Tikka</h3>
-                    <p> Juicy grilled chicken tikka with crispy fries.</p>
-                    <div class="menu-info">
-                        <span class="price">$12.99</span>
-                        <span class="rating">★★★★★</span>
-                    </div>
-                    <a href="customer/food-details.php" class="menu-btn">View Details</a>
-                </div>
-            </div>
+            <?php } ?>
         </div>
+
     </div>
 </section>
 
