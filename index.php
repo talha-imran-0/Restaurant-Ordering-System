@@ -26,8 +26,8 @@ $get_menu_items = mysqli_query($conn, "SELECT * FROM menu_items WHERE status = 1
                     To Your Door
                 </h1>
                 <p> Craving something delicious? Enjoy hot pizzas, juicy burgers, creamy pasta and BBQ made with fresh ingredients and delivered fast to your home.</p>               
-                <a href="customer/menu.php" class="btn"> Order Now </a>
-                <a href="customer/menu.php" class="btn btn-outline"> View Menu </a>
+                <a href="customer/menu.php?category=1" class="btn"> Order Now </a>
+                <a href="customer/menu.php?category=1" class="btn btn-outline"> View Menu </a>
             </div>
             <div class="hero-image">
                 <img src="assets/images/hero/hero-pizza.png" alt="Hero Pizza">
@@ -40,7 +40,7 @@ $get_menu_items = mysqli_query($conn, "SELECT * FROM menu_items WHERE status = 1
 
 <!-- Categories Section Start -->
 
-<section class="categories">
+<section class="categories" id="categories">
     <div class="container">
         <div class="section-heading">
             <h5>OUR CATEGORIES</h5>
@@ -51,10 +51,19 @@ $get_menu_items = mysqli_query($conn, "SELECT * FROM menu_items WHERE status = 1
 
             <?php while ($category = mysqli_fetch_assoc($get_categories)) { ?>
 
-                <a href="categories.php?id=<?php echo $category['id']; ?>" class="category-card">
-                    <img src="assets/uploads/categories/<?php echo $category['image']; ?> "alt="<?php echo $category['name']; ?>">
-                    <h3><?php echo $category['name']; ?></h3>
-                </a>
+                    <a href="customer/menu.php?category=<?php echo $category['id']; ?>" class="category-card">
+
+                        <img
+                            src="assets/uploads/categories/<?php echo htmlspecialchars($category['image']); ?>"
+                            alt="<?php echo htmlspecialchars($category['name']); ?>">
+
+                        <h3>
+
+                            <?php echo htmlspecialchars($category['name']); ?>
+
+                        </h3>
+
+                    </a>
                 
             <?php } ?>
 
@@ -66,7 +75,7 @@ $get_menu_items = mysqli_query($conn, "SELECT * FROM menu_items WHERE status = 1
 
 <!-- Featured Menu Section Start -->
 
-<section class="featured-menu">
+<section class="featured-menu" id="featured-menu">
     <div class="container">
         <div class="section-heading">
             <h5>FEATURED MENU</h5>

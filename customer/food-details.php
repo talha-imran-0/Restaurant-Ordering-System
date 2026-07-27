@@ -1,11 +1,136 @@
 <?php
-$page_title = "Food Details";
+
+require_once "../includes/config.php";
+require_once "../php/Functions.php";
+
 include "../includes/header.php";
+
+/*
+|--------------------------------------------------------------------------
+| Create Cart Session
+|--------------------------------------------------------------------------
+*/
+
+if (!isset($_SESSION["cart"])) {
+
+    $_SESSION["cart"] = [];
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| Check Product ID
+|--------------------------------------------------------------------------
+*/
+
+if (!isset($_GET["id"]) || empty($_GET["id"])) {
+
+    header("Location: ../index.php");
+    exit();
+
+}
+
+$product_id = (int) $_GET["id"];
+
+/*
+|--------------------------------------------------------------------------
+| Get Product
+|--------------------------------------------------------------------------
+*/
+
+$get_product = mysqli_query($conn, "
+
+SELECT
+menu_items.*,
+categories.name AS category_name
+
+FROM menu_items
+
+INNER JOIN categories
+ON menu_items.category_id = categories.id
+
+WHERE menu_items.id = '$product_id'
+AND menu_items.status = 1
+
+LIMIT 1
+
+");
+
+if (mysqli_num_rows($get_product) == 0) {
+
+    header("Location: ../index.php");
+    exit();
+
+}
+
+$product = mysqli_fetch_assoc($get_product);
+
+/*
+|--------------------------------------------------------------------------
+| Add To Cart
+|--------------------------------------------------------------------------
+*/
+
+if (isset($_POST["add_to_cart"])) {
+
+    $quantity = (int) $_POST["quantity"];
+
+    if ($quantity < 1) {
+
+        $quantity = 1;
+
+    }
+
+    if (isset($_SESSION["cart"][$product_id])) {
+
+        $_SESSION["cart"][$product_id]["quantity"] += $quantity;
+
+    } else {
+
+        $_SESSION["cart"][$product_id] = [
+
+            "id" => $product["id"],
+            "name" => $product["name"],
+            "price" => $product["price"],
+            "image" => $product["image"],
+            "quantity" => $quantity
+
+        ];
+
+    }
+
+    header("Location: cart.php");
+    exit();
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| Related Products
+|--------------------------------------------------------------------------
+*/
+
+$get_related = mysqli_query($conn, "
+
+SELECT *
+
+FROM menu_items
+
+WHERE category_id = '".$product["category_id"]."'
+
+AND id != '$product_id'
+
+AND status = 1
+
+LIMIT 4
+
+");
+
 ?>
 
-<!--=========================
-    PAGE BANNER START
-==========================-->
+<!-- ===================================
+PAGE BANNER START
+=================================== -->
 
 <section class="page-banner">
 
@@ -13,15 +138,23 @@ include "../includes/header.php";
 
         <div class="page-banner-content">
 
-            <h1>Food Details</h1>
+            <h1>
+
+                <?php echo htmlspecialchars($product["name"]); ?>
+
+            </h1>
 
             <p>
 
-                <a href="../index.php">Home</a>
+                <a href="../index.php">
+
+                    Home
+
+                </a>
 
                 /
 
-                Food Details
+                <?php echo htmlspecialchars($product["name"]); ?>
 
             </p>
 
@@ -31,106 +164,140 @@ include "../includes/header.php";
 
 </section>
 
-    <!-- FOOD DETAILS START -->
+<!-- ===================================
+FOOD DETAILS START
+=================================== -->
 
 <section class="food-details section-padding">
 
-    <div class="container">
+<div class="container">
 
-        <div class="food-details-wrapper">
+<div class="food-details-wrapper">
 
-            <!-- Left Side -->
+<div class="food-image">
 
-            <div class="food-image">
+<img
+src="../assets/uploads/menu/<?php echo $product["image"]; ?>"
+alt="<?php echo htmlspecialchars($product["name"]); ?>">
 
-                <img src="../assets/images/menu/menu-1.jpg" alt="Chicken Pizza">
+</div>
 
-            </div>
+<div class="food-content">
 
-            <!-- Right Side -->
+<span class="food-category">
 
-            <div class="food-content">
+<?php echo htmlspecialchars($product["category_name"]); ?>
 
-                <span class="food-category">
+</span>
 
-                    Pizza
+<h2>
 
-                </span>
+<?php echo htmlspecialchars($product["name"]); ?>
 
-                <h2>
+</h2>
 
-                    Chicken Fajita Pizza
+<div class="food-rating">
 
-                </h2>
+★★★★★
 
-                <div class="food-rating">
+<span>
 
-                    ★★★★★
+(120 Reviews)
 
-                    <span>(128 Reviews)</span>
+</span>
 
-                </div>
+</div>
 
-                <h3 class="food-price">
+<h3 class="food-price">
 
-                    $13.49
+$<?php echo number_format($product["price"],2); ?>
 
-                </h3>
+</h3>
 
-                <p>
+<p>
 
-                    Freshly baked chicken fajita pizza topped with premium mozzarella cheese,
-                    grilled chicken, onions, capsicum and our signature Urban Bites sauce.
+<?php echo htmlspecialchars($product["description"]); ?>
 
-                </p>
+</p>
 
-                <div class="quantity-area">
+<form method="POST">
 
-                    <span>Quantity</span>
+<div class="quantity-area">
 
-                    <div class="quantity-box">
+<span>
 
-                        <button id="minus-btn">-</button>
+Quantity
 
-                        <input
-                            type="text"
-                            id="quantity"
-                            value="1"
-                            readonly>
+</span>
 
-                        <button id="plus-btn">+</button>
+<div class="quantity-box">
 
-                    </div>
+<button
+type="button"
+id="minus-btn">
 
-                </div>
+-
 
-                <div class="food-buttons">
+</button>
 
-                    <a href="#" class="btn-primary">
+<input
+type="text"
+id="quantity"
+value="1"
+readonly>
 
-                        Add To Cart
+<input
+type="hidden"
+name="quantity"
+id="cart_quantity"
+value="1">
 
-                    </a>
+<button
+type="button"
+id="plus-btn">
 
-                    <a href="cart.php" class="btn-secondary">
++
 
-                        Buy Now
+</button>
 
-                    </a>
+</div>
 
-                </div>
+</div>
 
-            </div>
+<div class="food-buttons">
 
-        </div>
+<button
+type="submit"
+name="add_to_cart"
+class="btn-primary">
 
-    </div>
+Add To Cart
+
+</button>
+
+<a
+href="cart.php"
+class="btn-secondary">
+
+Buy Now
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
 
 </section>
 
-<!--=========================
-    PRODUCT DESCRIPTION START
-==========================-->
+<!-- ===================================
+PRODUCT DESCRIPTION START
+=================================== -->
 
 <section class="product-description section-padding">
 
@@ -138,9 +305,17 @@ include "../includes/header.php";
 
         <div class="section-title">
 
-            <span>About This Food</span>
+            <span>
 
-            <h2>Description</h2>
+                About This Food
+
+            </span>
+
+            <h2>
+
+                Description
+
+            </h2>
 
         </div>
 
@@ -148,16 +323,13 @@ include "../includes/header.php";
 
             <p>
 
-                Our Chicken Fajita Pizza is prepared with freshly baked dough,
-                premium mozzarella cheese, grilled chicken, fresh onions,
-                capsicum, olives and Urban Bites special pizza sauce.
+                <?php echo nl2br(htmlspecialchars($product["description"])); ?>
 
             </p>
 
             <p>
 
-                Every order is freshly prepared after confirmation to
-                maintain the best taste, freshness and quality.
+                Every order is freshly prepared using premium quality ingredients to deliver the best taste and freshness.
 
             </p>
 
@@ -167,15 +339,14 @@ include "../includes/header.php";
 
 </section>
 
-<!--=========================
-    PRODUCT DESCRIPTION END
-==========================-->
+<!-- ===================================
+PRODUCT DESCRIPTION END
+=================================== -->
 
 
-
-<!--=========================
-    ADDITIONAL INFORMATION START
-==========================-->
+<!-- ===================================
+ADDITIONAL INFORMATION START
+=================================== -->
 
 <section class="additional-info section-padding">
 
@@ -183,9 +354,17 @@ include "../includes/header.php";
 
         <div class="section-title">
 
-            <span>Product Details</span>
+            <span>
 
-            <h2>Additional Information</h2>
+                Product Details
+
+            </span>
+
+            <h2>
+
+                Additional Information
+
+            </h2>
 
         </div>
 
@@ -195,15 +374,23 @@ include "../includes/header.php";
 
                 <strong>Category</strong>
 
-                <span>Pizza</span>
+                <span>
+
+                    <?php echo htmlspecialchars($product["category_name"]); ?>
+
+                </span>
 
             </div>
 
             <div class="info-item">
 
-                <strong>Size</strong>
+                <strong>Price</strong>
 
-                <span>Large</span>
+                <span>
+
+                    $<?php echo number_format($product["price"],2); ?>
+
+                </span>
 
             </div>
 
@@ -211,7 +398,11 @@ include "../includes/header.php";
 
                 <strong>Delivery Time</strong>
 
-                <span>30 - 40 Minutes</span>
+                <span>
+
+                    30 - 40 Minutes
+
+                </span>
 
             </div>
 
@@ -219,7 +410,11 @@ include "../includes/header.php";
 
                 <strong>Availability</strong>
 
-                <span>In Stock</span>
+                <span>
+
+                    In Stock
+
+                </span>
 
             </div>
 
@@ -229,15 +424,14 @@ include "../includes/header.php";
 
 </section>
 
-<!--=========================
-    ADDITIONAL INFORMATION END
-==========================-->
+<!-- ===================================
+ADDITIONAL INFORMATION END
+=================================== -->
 
 
-
-<!--=========================
-    RELATED PRODUCTS START
-==========================-->
+<!-- ===================================
+RELATED PRODUCTS START
+=================================== -->
 
 <section class="related-products section-padding">
 
@@ -245,93 +439,111 @@ include "../includes/header.php";
 
         <div class="section-title">
 
-            <span>You May Also Like</span>
+            <span>
 
-            <h2>Related Products</h2>
+                You May Also Like
+
+            </span>
+
+            <h2>
+
+                Related Products
+
+            </h2>
 
         </div>
 
         <div class="menu-grid">
 
-            <!-- Product 1 -->
+<?php
 
-            <div class="menu-card">
+if(mysqli_num_rows($get_related)>0)
+{
 
-                <div class="menu-image">
+while($related=mysqli_fetch_assoc($get_related))
+{
 
-                    <img src="../assets/images/menu/menu-2.jpg" alt="Pizza">
+?>
 
-                </div>
+<div class="menu-card">
 
-                <div class="menu-content">
+    <img
+        src="../assets/uploads/menu/<?php echo $related["image"]; ?>"
+        alt="<?php echo htmlspecialchars($related["name"]); ?>">
 
-                    <h3>Cheese Lovers Pizza</h3>
+    <div class="menu-content">
 
-                    <p>
+        <h3>
 
-                        Extra cheese with premium toppings.
+            <?php echo htmlspecialchars($related["name"]); ?>
 
-                    </p>
+        </h3>
 
-                    <div class="menu-bottom">
+        <p>
 
-                        <span class="price">
+            <?php echo htmlspecialchars($related["description"]); ?>
 
-                            $12.99
+        </p>
 
-                        </span>
+        <div class="menu-info">
 
-                        <a href="food-details.php" class="menu-btn">
+            <span class="price">
 
-                            View Details
+                $<?php echo number_format($related["price"],2); ?>
 
-                        </a>
+            </span>
 
-                    </div>
+            <span class="rating">
 
-                </div>
+                ★★★★★
 
-            </div>
+            </span>
 
-            <!-- Product 2 -->
+        </div>
 
-            <div class="menu-card">
+        <a
+            href="food-details.php?id=<?php echo $related["id"]; ?>"
+            class="menu-btn">
 
-                <div class="menu-image">
+            View Details
 
-                    <img src="../assets/images/menu/menu-3.jpg" alt="Burger">
+        </a>
 
-                </div>
+    </div>
 
-                <div class="menu-content">
+</div>
 
-                    <h3>Zinger Burger</h3>
+<?php
 
-                    <p>
+}
 
-                        Crispy chicken burger with spicy sauce.
+}
+else
+{
 
-                    </p>
+?>
 
-                    <div class="menu-bottom">
+<div class="no-products">
 
-                        <span class="price">
+    <h3>
 
-                            $7.99
+        No Related Products Found
 
-                        </span>
+    </h3>
 
-                        <a href="food-details.php" class="menu-btn">
+    <p>
 
-                            View Details
+        No related food items are available.
 
-                        </a>
+    </p>
 
-                    </div>
+</div>
 
-                </div>
+<?php
 
-            </div>
+}
+
+?>
 
         </div>
 
@@ -339,4 +551,48 @@ include "../includes/header.php";
 
 </section>
 
-<?php include "../includes/footer.php"; ?>
+<!-- ===================================
+RELATED PRODUCTS END
+=================================== -->
+
+
+<script>
+
+const quantityInput=document.getElementById("quantity");
+const hiddenQuantity=document.getElementById("cart_quantity");
+
+document.getElementById("plus-btn").addEventListener("click",function(){
+
+    let qty=parseInt(quantityInput.value);
+
+    qty++;
+
+    quantityInput.value=qty;
+
+    hiddenQuantity.value=qty;
+
+});
+
+document.getElementById("minus-btn").addEventListener("click",function(){
+
+    let qty=parseInt(quantityInput.value);
+
+    if(qty>1){
+
+        qty--;
+
+        quantityInput.value=qty;
+
+        hiddenQuantity.value=qty;
+
+    }
+
+});
+
+</script>
+
+<?php
+
+include "../includes/footer.php";
+
+?>

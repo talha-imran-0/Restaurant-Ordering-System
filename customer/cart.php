@@ -1,10 +1,76 @@
 <?php
-$page_title = "Shopping Cart";
+
+require_once "../includes/config.php";
+require_once "../php/Functions.php";
+
 include "../includes/header.php";
+
+// Create Cart Session
+if (!isset($_SESSION["cart"])) {
+    $_SESSION["cart"] = [];
+}
+
+// Remove Product
+if (isset($_GET["remove"])) {
+
+    $remove_id = (int) $_GET["remove"];
+
+    if (isset($_SESSION["cart"][$remove_id])) {
+
+        unset($_SESSION["cart"][$remove_id]);
+
+    }
+
+    header("Location: cart.php");
+    exit();
+
+}
+
+// Increase Quantity
+if (isset($_GET["increase"])) {
+
+    $id = (int) $_GET["increase"];
+
+    if (isset($_SESSION["cart"][$id])) {
+
+        $_SESSION["cart"][$id]["quantity"]++;
+
+    }
+
+    header("Location: cart.php");
+    exit();
+
+}
+
+// Decrease Quantity
+if (isset($_GET["decrease"])) {
+
+    $id = (int) $_GET["decrease"];
+
+    if (isset($_SESSION["cart"][$id])) {
+
+        $_SESSION["cart"][$id]["quantity"]--;
+
+        if ($_SESSION["cart"][$id]["quantity"] <= 0) {
+
+            unset($_SESSION["cart"][$id]);
+
+        }
+
+    }
+
+    header("Location: cart.php");
+    exit();
+
+}
+
+$subtotal = 0;
+$delivery = 2.00;
+
 ?>
 
 <!--=========================
-        PAGE BANNER START
+        PAGE BANNER
 ==========================-->
 
 <section class="page-banner">
@@ -21,7 +87,11 @@ include "../includes/header.php";
 
             <p>
 
-                <a href="../index.php">Home</a>
+                <a href="../index.php">
+
+                    Home
+
+                </a>
 
                 /
 
@@ -36,141 +106,300 @@ include "../includes/header.php";
 </section>
 
 <!--=========================
-        CART START
+        CART
 ==========================-->
 
 <section class="cart section-padding">
 
-    <div class="container">
+<div class="container">
 
-        <div class="cart-wrapper">
+<div class="cart-wrapper">
 
-            <div class="cart-table">
+<div class="cart-table">
 
-                <table>
+<table>
 
-                    <thead>
+<thead>
 
-                        <tr>
+<tr>
 
-                            <th>Product</th>
+<th>Product</th>
 
-                            <th>Price</th>
+<th>Price</th>
 
-                            <th>Quantity</th>
+<th>Quantity</th>
 
-                            <th>Total</th>
+<th>Total</th>
 
-                            <th>Remove</th>
+<th>Remove</th>
 
-                        </tr>
+</tr>
 
-                    </thead>
+</thead>
 
-                    <tbody>
+<tbody>
 
-                        <tr>
+<?php
 
-                            <td>
+if (!empty($_SESSION["cart"])) {
 
-                                <div class="cart-product">
+foreach ($_SESSION["cart"] as $item) {
 
-                                    <img src="../assets/images/menu/menu-1.jpg" alt="Pizza">
+$total = $item["price"] * $item["quantity"];
 
-                                    <span>
+$subtotal += $total;
 
-                                        Chicken Fajita Pizza
+?>
+<tr>
 
-                                    </span>
+<td>
 
-                                </div>
+<div class="cart-product">
 
-                            </td>
+<div class="cart-product-image">
 
-                            <td>
+<img
+src="../assets/uploads/menu/<?php echo $item["image"]; ?>"
+alt="<?php echo htmlspecialchars($item["name"]); ?>">
 
-                                $13.49
+</div>
 
-                            </td>
+<div class="cart-product-info">
 
-                            <td>
+<h4>
 
-                                <div class="quantity-box">
+<?php echo htmlspecialchars($item["name"]); ?>
 
-                                    <button>-</button>
+</h4>
 
-                                    <input type="text" value="1" readonly>
+<p>
 
-                                    <button>+</button>
+$<?php echo number_format($item["price"],2); ?>
 
-                                </div>
+</p>
 
-                            </td>
+</div>
 
-                            <td>
+</div>
 
-                                $13.49
+</td>
 
-                            </td>
+<td>
 
-                            <td>
+$<?php echo number_format($item["price"],2); ?>
 
-                                ✖
+</td>
 
-                            </td>
+<td>
 
-                        </tr>
+<div class="quantity-box">
 
-                    </tbody>
+<a href="?decrease=<?php echo $item["id"]; ?>" class="qty-btn">
 
-                </table>
+−
 
-            </div>
+</a>
 
-            <div class="cart-summary">
+<input
+type="text"
+value="<?php echo $item["quantity"]; ?>"
+readonly>
 
-                <h3>
+<a href="?increase=<?php echo $item["id"]; ?>" class="qty-btn">
 
-                    Cart Summary
++
 
-                </h3>
+</a>
 
-                <div class="summary-item">
+</div>
 
-                    <span>Subtotal</span>
+</td>
 
-                    <span>$13.49</span>
+<td>
 
-                </div>
+<strong>
 
-                <div class="summary-item">
+$<?php echo number_format($total,2); ?>
 
-                    <span>Delivery</span>
+</strong>
 
-                    <span>$2.00</span>
+</td>
 
-                </div>
+<td>
 
-                <div class="summary-item total">
+<a
+href="?remove=<?php echo $item["id"]; ?>"
+class="remove-btn">
 
-                    <span>Total</span>
+<i class="fa-solid fa-trash"></i>
 
-                    <span>$15.49</span>
+</a>
 
-                </div>
+</td>
 
-                <a href="checkout.php" class="btn-primary">
+</tr>
 
-                    Proceed To Checkout
+<?php
 
-                </a>
+}
 
-            </div>
+} else {
 
-        </div>
+?>
+
+<tr>
+
+<td colspan="5">
+
+<div class="empty-cart">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+<h3>
+
+Your Cart Is Empty
+
+</h3>
+
+<p>
+
+Looks like you haven't added any delicious food yet.
+
+</p>
+
+<a href="../index.php#featured-menu" class="btn-primary">
+
+Browse Menu
+
+</a>
+
+</div>
+
+</td>
+
+</tr>
+
+<?php
+
+}
+
+?>
+<!-- CART SUMMARY START -->
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="cart-summary">
+
+    <h3>
+
+        Cart Summary
+
+    </h3>
+
+<?php
+
+$total = $subtotal + $delivery;
+
+?>
+
+    <div class="summary-item">
+
+        <span>
+
+            Subtotal
+
+        </span>
+
+        <span>
+
+            $<?php echo number_format($subtotal,2); ?>
+
+        </span>
 
     </div>
 
+    <div class="summary-item">
+
+        <span>
+
+            Delivery Charges
+
+        </span>
+
+        <span>
+
+            $<?php echo number_format($delivery,2); ?>
+
+        </span>
+
+    </div>
+
+    <div class="summary-item total">
+
+        <span>
+
+            Grand Total
+
+        </span>
+
+        <span>
+
+            $<?php echo number_format($total,2); ?>
+
+        </span>
+
+    </div>
+
+<?php
+
+if (!empty($_SESSION["cart"])) {
+
+?>
+
+    <a
+        href="checkout.php"
+        class="btn-primary">
+
+        Proceed To Checkout
+
+    </a>
+
+<?php
+
+} else {
+
+?>
+
+    <a
+        href="../index.php"
+        class="btn-primary">
+
+        Continue Shopping
+
+    </a>
+
+<?php
+
+}
+
+?>
+
+</div>
+
+</div>
+
+</div>
+
 </section>
 
-<?php include "../includes/footer.php"; ?>
+<!-- CART SUMMARY END -->
+
+<?php
+
+include "../includes/footer.php";
+
+?>
