@@ -1,6 +1,4 @@
-// ==========================
-// Mobile Sidebar
-// ==========================
+    // Mobile Sidebar
 
 var menuToggle = document.getElementById("menu-toggle");
 var mobileSidebar = document.getElementById("mobile-sidebar");
@@ -48,9 +46,7 @@ sidebarLinks.forEach(function (link) {
 });
 
 
-/*=========================================
-        FOOD DETAILS START
-=========================================*/
+    // FOOD DETAILS START
 
 var minusButton = document.getElementById("minus-btn");
 var plusButton = document.getElementById("plus-btn");
@@ -98,6 +94,4 @@ if (addToCartButton) {
 
 }
 
-/*=========================================
-        FOOD DETAILS END
-=========================================*/
+    // Food Details End 

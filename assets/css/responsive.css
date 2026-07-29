@@ -605,9 +605,7 @@
 
 }
 
-/*=========================================
-        FOOD DETAILS RESPONSIVE START
-=========================================*/
+    /* Food Details Start  */
 
 @media (max-width: 992px) {
 
@@ -634,6 +632,10 @@
     .food-image,
     .food-content {
         width: 100%;
+    }
+
+    .food-image{
+        height:380px;
     }
 
     .food-content {
@@ -675,14 +677,17 @@
     .food-price {
         font-size: 26px;
     }
+    .food-image{
+        height:280px;
+    }
 
     .food-buttons {
         flex-direction: column;
     }
 
-    .food-buttons a {
-        width: 100%;
-        text-align: center;
+    .food-buttons a,
+    .food-buttons button{
+        width:100%;
     }
 
     .quantity-box button {
@@ -697,6 +702,80 @@
 
 }
 
-/*=========================================
-        FOOD DETAILS RESPONSIVE END
-=========================================*/
+    /* Food Details End  */
+
+    /* Cart Start  */
+
+@media (max-width:768px){
+
+    .cart-wrapper{
+
+        flex-direction:column;
+
+    }
+
+    .cart-summary{
+
+        width:100%;
+        position:static;
+        margin-top:30px;
+
+    }
+
+    .cart-product{
+
+        flex-direction:column;
+        text-align:center;
+
+    }
+
+    .cart-product-info{
+
+        text-align:center;
+
+    }
+
+    .cart-product-image{
+
+        width:90px;
+        height:90px;
+
+    }
+
+    .cart-table{
+
+        overflow-x:auto;
+
+    }
+
+    }
+
+    @media (max-width:576px){
+
+    .cart-summary{
+
+        padding:25px;
+
+    }
+
+    .cart-summary h3{
+
+        font-size:22px;
+
+    }
+
+    .summary-item.total{
+
+        font-size:20px;
+
+    }
+
+    .empty-cart{
+
+        padding:60px 20px 90px;
+
+    }
+
+}
+
+    /* Cart End */
