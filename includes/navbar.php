@@ -21,7 +21,27 @@
                 <li><a href="index.php#categories">Categories</a></li>
                 <li><a href="about.php">About</a></li>
                 <li><a href="contact.php">Contact</a></li>
-                <li><a href="customer/login.php" class="login-btn">Login</a></li>
+
+                <?php if (isset($_SESSION["user_id"])) { ?>
+
+                    <li class="user-dropdown">
+                        <a href="#">
+                            👤 <?php echo htmlspecialchars(explode(" ", $_SESSION["user_name"])[0]); ?>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a href="customer/profile.php">Profile</a></li>
+                            <li><a href="customer/order_tracking.php">My Orders</a></li>
+                            <li><a href="customer/logout.php">Logout</a></li>
+                        </ul>
+                    </li>
+
+                <?php } else { ?>
+
+                    <li><a href="customer/login.php" class="login-btn">Login</a></li>
+
+                <?php } ?>
+
             </ul>
 
         </div>
@@ -43,6 +63,18 @@
         <li><a href="index.php#categories">Categories</a></li>
         <li><a href="about.php">About</a></li>
         <li><a href="contact.php">Contact</a></li>
-        <li><a href="customer/login.php" class="sidebar-login-btn">Login</a></li>
+
+        <?php if (isset($_SESSION["user_id"])) { ?>
+
+            <li><a href="customer/profile.php"><?php echo htmlspecialchars($_SESSION["user_name"]); ?></a></li>
+            <li><a href="customer/order_tracking.php">My Orders</a></li>
+            <li><a href="customer/logout.php" class="sidebar-login-btn">Logout</a></li>
+
+        <?php } else { ?>
+
+            <li><a href="customer/login.php" class="sidebar-login-btn">Login</a></li>
+
+        <?php } ?>
+
     </ul>
 </div>
