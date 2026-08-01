@@ -18,7 +18,7 @@ function require_admin()
 {
     require_login();
 
-    if ($_SESSION["role"] != "admin")
+    if ($_SESSION["user_role"] != "admin")
     {
         header("Location: ../index.php");
         exit();
@@ -31,7 +31,7 @@ function require_customer()
 {
     require_login();
 
-    if ($_SESSION["role"] != "customer")
+    if ($_SESSION["user_role"] != "customer")
     {
         header("Location: ../index.php");
         exit();

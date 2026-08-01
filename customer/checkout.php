@@ -2,11 +2,161 @@
 
 require_once "../includes/config.php";
 require_once "../php/Functions.php";
+require_once "../php/Auth.php";
+
+require_customer();
+
+$message = "";
 
 include "../includes/header.php";
 
 
-	/* CREATE CART SESSION */
+	/* PLACE ORDER */
+
+if (isset($_POST["place_order"])) {
+
+	$name = trim($_POST["name"]);
+	$email = trim($_POST["email"]);
+	$phone = trim($_POST["phone"]);
+	$address = trim($_POST["address"]);
+	$city = trim($_POST["city"]);
+	$notes = trim($_POST["notes"]);
+	$payment_method = trim($_POST["payment_method"]);
+
+	if (
+		empty($name) ||
+		empty($email) ||
+		empty($phone) ||
+		empty($address) ||
+		empty($city)
+	) {
+		$message = "<div class='error-message'>Please fill all required fields.</div>";
+	}
+	else {
+
+		$user_id = $_SESSION["user_id"];
+
+		$subtotal = 0;
+
+		foreach ($_SESSION["cart"] as $item) {
+			$subtotal += $item["price"] * $item["quantity"];
+		}
+
+		$delivery = 2.00;
+		$discount = 0;
+		$total = $subtotal + $delivery;
+
+		$order_number = "UB" . date("YmdHis") . rand(100,999);
+
+		$insert_order = mysqli_query($conn, "
+			INSERT INTO orders
+			(
+				user_id,
+				delivery_address,
+				city,
+				order_notes,
+				coupon_id,
+				order_number,
+				subtotal,
+				discount,
+				delivery_charges,
+				total,
+				payment_method,
+				payment_status,
+				order_status,
+				created_at,
+				updated_at
+			)
+			VALUES
+			(
+				'$user_id',
+				'$address',
+				'$city',
+				'$notes',
+				NULL,
+				'$order_number',
+				'$subtotal',
+				'$discount',
+				'$delivery',
+				'$total',
+				'$payment_method',
+				'Pending',
+				'Pending',
+				NOW(),
+				NOW()
+			)
+		");
+
+		if ($insert_order) {
+
+			$order_id = mysqli_insert_id($conn);
+						foreach ($_SESSION["cart"] as $item) {
+
+				$menu_item_id = $item["id"];
+				$quantity = $item["quantity"];
+				$price = $item["price"];
+				$item_total = $price * $quantity;
+
+				mysqli_query($conn, "
+					INSERT INTO order_items
+					(
+						order_id,
+						menu_item_id,
+						quantity,
+						price,
+						subtotal
+					)
+					VALUES
+					(
+						'$order_id',
+						'$menu_item_id',
+						'$quantity',
+						'$price',
+						'$item_total'
+					)
+				");
+			}
+
+
+			mysqli_query($conn, "
+				INSERT INTO payments
+				(
+					order_id,
+					payment_method,
+					amount,
+					payment_status,
+					transaction_id,
+					paid_at,
+					created_at
+				)
+				VALUES
+				(
+					'$order_id',
+					'$payment_method',
+					'$total',
+					'Pending',
+					'',
+					NULL,
+					NOW()
+				)
+			");
+
+
+			unset($_SESSION["cart"]);
+
+			header("Location: order-success.php?order=" . $order_number);
+			exit();
+
+		}
+		else {
+
+			$message = "<div class='error-message'>Something went wrong. Please try again.</div>";
+
+		}
+
+	}
+
+}
 
 if (!isset($_SESSION["cart"])) {
 	$_SESSION["cart"] = [];
@@ -55,7 +205,7 @@ $grand_total = $subtotal + $delivery;
 
 			<div class="checkout-form">
 				<h2>Billing Details</h2>
-
+				<?php echo $message; ?>
 				<form method="POST">
 					<div class="form-group">
 						<label>Full Name</label>

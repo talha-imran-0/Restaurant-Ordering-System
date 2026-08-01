@@ -30,6 +30,9 @@ if (isset($_POST["register"])) {
 	elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 		$message = "<div class='error-message'>Please enter a valid email address.</div>";
 	}
+	elseif (strlen($password) < 8) {
+	$message = "<div class='error-message'>Password must be at least 8 characters long.</div>";
+	}
 	elseif ($password != $confirm_password) {
 		$message = "<div class='error-message'>Passwords do not match.</div>";
 	}

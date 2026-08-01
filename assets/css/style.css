@@ -63,6 +63,50 @@ img {
 	padding: 15px 0;
 }
 
+.user-dropdown {
+    position: relative;
+}
+
+.user-dropdown > a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 180px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    padding: 10px 0;
+    list-style: none;
+    display: none;
+    z-index: 999;
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 12px 18px;
+    color: #222;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dropdown-menu li a:hover {
+    background: #f5f5f5;
+    color: #e63946;
+}
+
+.user-dropdown:hover .dropdown-menu {
+    display: block;
+}
 
 	/* LOGO */
 
@@ -1438,4 +1482,98 @@ img {
 
 .login-register a:hover {
 	text-decoration: underline;
+}
+
+	/* Order Success  */
+
+.order-success-wrapper{
+    max-width:700px;
+    margin:0 auto;
+    text-align:center;
+    background:#fff;
+    padding:50px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.success-icon{
+    font-size:70px;
+    color:#28a745;
+    margin-bottom:20px;
+}
+
+.order-success-wrapper h2{
+    margin-bottom:15px;
+}
+
+.order-success-wrapper p{
+    margin-bottom:20px;
+    color:#666;
+}
+
+.order-number{
+    display:inline-block;
+    background:#f5f5f5;
+    padding:15px 25px;
+    border-radius:8px;
+    margin-bottom:25px;
+}
+
+.order-number span{
+    color:#e63946;
+    font-weight:700;
+}
+
+.success-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:30px;
+}
+
+	/* Customer Profile */
+	
+.profile-wrapper{
+	max-width:800px;
+	margin:0 auto;
+}
+
+.profile-header{
+	text-align:center;
+	margin-bottom:40px;
+}
+
+.profile-card{
+	background:#fff;
+	padding:30px;
+	border-radius:10px;
+	box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.profile-item{
+	padding:18px 0;
+	border-bottom:1px solid #eeeeee;
+}
+
+.profile-item:last-child{
+	border-bottom:none;
+}
+
+.profile-item label{
+	display:block;
+	font-weight:600;
+	margin-bottom:8px;
+	color:#222;
+}
+
+.profile-item p{
+	color:#666;
+	margin:0;
+}
+
+.profile-buttons{
+	margin-top:30px;
+	display:flex;
+	gap:15px;
+	flex-wrap:wrap;
 }
