@@ -77,7 +77,7 @@ $user = mysqli_fetch_assoc($get_user);
 
 			<div class="profile-buttons">
 				<a href="update-profile.php" class="btn-primary">Update Profile</a>
-				<a href="change-password.php" class="btn-secondary">Change Password</a>
+				<a href="change-password.php" class="btn-change-password btn-secondary">Change Password</a>
 				<a href="order_tracking.php" class="btn-primary">My Orders</a>
 			</div>
 

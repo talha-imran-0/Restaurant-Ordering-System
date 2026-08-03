@@ -53,7 +53,7 @@ $order_number = trim($_GET["order"]);
 			</div>
 
 			<p>
-				We have received your order and our team will start preparing it shortly.
+				You can track your order status anytime from the My Orders page.
 			</p>
 
 			<div class="success-buttons">

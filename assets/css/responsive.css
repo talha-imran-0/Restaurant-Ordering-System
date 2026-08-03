@@ -778,4 +778,175 @@
 
 }
 
-    /* Cart End */
+    /* Cart End  */
+
+
+    /* Order Tracking */
+
+@media (max-width:991px){
+
+    .order-tracking-wrapper{
+        overflow-x:auto;
+    }
+
+    .order-table{
+        min-width:900px;
+    }
+
+}
+
+@media (max-width:768px){
+
+    .order-tracking{
+        padding:60px 0;
+    }
+
+    .order-tracking-wrapper{
+        padding:20px;
+        overflow-x:auto;
+    }
+
+    .order-table{
+        min-width:850px;
+    }
+
+    .order-table th,
+    .order-table td{
+        padding:14px;
+        font-size:14px;
+        white-space:nowrap;
+    }
+
+    .empty-orders{
+        padding:40px 20px;
+        text-align:center;
+    }
+
+    .empty-orders h2{
+        font-size:28px;
+        margin-bottom:15px;
+    }
+
+    .empty-orders p{
+        margin-bottom:25px;
+        color:#cccccc;
+    }
+
+    .empty-orders .btn-primary{
+        display:inline-flex;
+        justify-content:center;
+        align-items:center;
+        width:220px;
+        height:50px;
+    }
+
+}
+
+@media (max-width:480px){
+
+    .order-tracking{
+        padding:50px 0;
+    }
+
+    .order-tracking-wrapper{
+        padding:15px;
+    }
+
+    .order-table{
+        min-width:780px;
+    }
+
+    .order-table th,
+    .order-table td{
+        font-size:13px;
+        padding:12px;
+    }
+
+}
+
+    /* About Page */
+
+@media (max-width:991px){
+
+	.about-wrapper{
+		flex-direction:column;
+		text-align:center;
+	}
+
+	.about-image,
+	.about-content{
+		width:100%;
+	}
+
+	.about-content h2{
+		font-size:34px;
+	}
+
+}
+
+
+    /* Contact Page */
+
+@media (max-width:991px){
+
+	.contact-wrapper{
+		flex-direction:column;
+	}
+
+	.contact-info,
+	.contact-form{
+		width:100%;
+	}
+
+	.contact-form{
+		padding:30px;
+	}
+
+	.contact-map{
+		height:400px;
+	}
+
+}
+
+@media (max-width:768px){
+
+	.contact{
+		padding:60px 0;
+	}
+
+	.contact-card{
+		padding:25px 20px;
+	}
+
+	.contact-card i{
+		font-size:32px;
+	}
+
+	.contact-card h3{
+		font-size:22px;
+	}
+
+	.contact-form{
+		padding:25px 20px;
+	}
+
+	.contact-form h3{
+		font-size:26px;
+		text-align:center;
+	}
+
+	.contact-form input,
+	.contact-form textarea{
+		font-size:15px;
+		padding:14px;
+	}
+
+	.contact-form .btn-primary{
+		height:50px;
+	}
+
+	.contact-map{
+		height:300px;
+	}
+
+}

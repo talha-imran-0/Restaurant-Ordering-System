@@ -98,7 +98,10 @@ include "../includes/header.php";
 	<div class="container">
 		<div class="profile-wrapper">
 
-			<h2>Change Password</h2>
+			<div class="profile-header">
+				<h2>Change Password</h2>
+				<p>Choose a strong password to keep your account secure.</p>
+			</div>
 
 			<?php echo $message; ?>
 
@@ -140,14 +143,14 @@ include "../includes/header.php";
 						name="change_password"
 						class="btn-primary"
 					>
-						Change Password
+						<i class="fa-solid fa-key"></i> Change Password
 					</button>
 
 					<a
 						href="profile.php"
 						class="btn-secondary"
 					>
-						Back
+						<i class="fa-solid fa-arrow-left"></i> Back
 					</a>
 
 				</div>

@@ -105,7 +105,10 @@ include "../includes/header.php";
 	<div class="container">
 		<div class="profile-wrapper">
 
-			<h2>Update Your Profile</h2>
+			<div class="profile-header">
+				<h2>Update Profile</h2>
+				<p>Keep your personal information up to date.</p>
+			</div>
 
 			<?php echo $message; ?>
 
@@ -147,14 +150,14 @@ include "../includes/header.php";
 						name="update_profile"
 						class="btn-primary"
 					>
-						Update Profile
+						<i class="fa-solid fa-floppy-disk"></i> Save Changes
 					</button>
 
 					<a
 						href="profile.php"
 						class="btn-secondary"
 					>
-						Back
+						<i class="fa-solid fa-arrow-left"></i> Back
 					</a>
 				</div>
 

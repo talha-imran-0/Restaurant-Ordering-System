@@ -26,13 +26,32 @@
 
                     <li class="user-dropdown">
                         <a href="#">
-                            👤 <?php echo htmlspecialchars(explode(" ", $_SESSION["user_name"])[0]); ?>
+                            <i class="fa-solid fa-circle-user"></i>
+                            <span><?php echo htmlspecialchars(explode(" ", $_SESSION["user_name"])[0]); ?></span>
+                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a href="customer/profile.php">Profile</a></li>
-                            <li><a href="customer/order_tracking.php">My Orders</a></li>
-                            <li><a href="customer/logout.php">Logout</a></li>
+                            <li>
+                                <a href="customer/profile.php">
+                                    <i class="fa-solid fa-user"></i>
+                                    My Profile
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="customer/order_tracking.php">
+                                    <i class="fa-solid fa-bag-shopping"></i>
+                                    My Orders
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="customer/logout.php">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    Logout
+                                </a>
+                            </li>
                         </ul>
                     </li>
 

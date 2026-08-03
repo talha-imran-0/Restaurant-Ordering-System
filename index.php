@@ -223,8 +223,8 @@ $get_menu_items = mysqli_query($conn, "SELECT * FROM menu_items WHERE status = 1
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="menu.php">Menu</a></li>
-                    <li><a href="categories.php">Categories</a></li>
+                    <li><a href="#featured-menu">Menu</a></li>
+                    <li><a href="#categories">Categories</a></li>
                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                 </ul>
