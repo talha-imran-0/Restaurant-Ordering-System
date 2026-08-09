@@ -135,7 +135,7 @@ $get_related = mysqli_query($conn, "
 					<span>(120 Reviews)</span>
 				</div>
 
-				<h3 class="food-price">Rs. <?php echo number_format($product["price"], 2); ?></h3>
+				<h3 class="food-price">$ <?php echo number_format($product["price"], 2); ?></h3>
 				<p><?php echo htmlspecialchars($product["description"]); ?></p>
 
 				<form method="POST">
@@ -198,7 +198,7 @@ $get_related = mysqli_query($conn, "
 
 			<div class="info-item">
 				<strong>Price</strong>
-				<span>Rs. <?php echo number_format($product["price"], 2); ?></span>
+				<span>$ <?php echo number_format($product["price"], 2); ?></span>
 			</div>
 
 			<div class="info-item">
@@ -237,7 +237,7 @@ $get_related = mysqli_query($conn, "
 					<p><?php echo htmlspecialchars($related["description"]); ?></p>
 
 					<div class="menu-info">
-						<span class="price">Rs. <?php echo number_format($related["price"], 2); ?></span>
+						<span class="price">$ <?php echo number_format($related["price"], 2); ?></span>
 						<span class="rating">★★★★★</span>
 					</div>
 

@@ -9,53 +9,53 @@ require_customer();
 include "../includes/header.php";
 
 
-	/* CREATE CART SESSION */
+/* CREATE CART SESSION */
 
 if (!isset($_SESSION["cart"])) {
-	$_SESSION["cart"] = [];
+    $_SESSION["cart"] = [];
 }
 
 
-	/* CHECK ORDER ID */
+/* CHECK ORDER ID */
 
 if (!isset($_GET["id"]) || empty($_GET["id"])) {
-	header("Location: order_tracking.php");
-	exit();
+    header("Location: order_tracking.php");
+    exit();
 }
 
 $order_id = (int) $_GET["id"];
 $user_id = $_SESSION["user_id"];
 
 
-	/* GET ORDER */
+/* GET ORDER */
 
 $get_order = mysqli_query($conn, "
-	SELECT *
-	FROM orders
-	WHERE id = '$order_id'
-	AND user_id = '$user_id'
-	LIMIT 1
+    SELECT *
+    FROM orders
+    WHERE id = '$order_id'
+    AND user_id = '$user_id'
+    LIMIT 1
 ");
 
 if (mysqli_num_rows($get_order) == 0) {
-	header("Location: order_tracking.php");
-	exit();
+    header("Location: order_tracking.php");
+    exit();
 }
 
 $order = mysqli_fetch_assoc($get_order);
 
 
-	/* GET ORDER ITEMS */
+/* GET ORDER ITEMS */
 
 $get_items = mysqli_query($conn, "
-	SELECT
-		order_items.*,
-		menu_items.name,
-		menu_items.image
-	FROM order_items
-	INNER JOIN menu_items
-	ON order_items.menu_item_id = menu_items.id
-	WHERE order_items.order_id = '$order_id'
+    SELECT
+        order_items.*,
+        menu_items.name,
+        menu_items.image
+    FROM order_items
+    INNER JOIN menu_items
+    ON order_items.menu_item_id = menu_items.id
+    WHERE order_items.order_id = '$order_id'
 ");
 
 ?>
@@ -63,245 +63,297 @@ $get_items = mysqli_query($conn, "
 <!-- PAGE BANNER -->
 
 <section class="page-banner">
-	<div class="container">
-		<div class="page-banner-content">
-			<h1>Order Details</h1>
-			<p>
-				<a href="../index.php">Home</a> /
-				<a href="order_tracking.php">My Orders</a> /
-				Order Details
-			</p>
-		</div>
-	</div>
+    <div class="container">
+        <div class="page-banner-content">
+            <h1>Order Details</h1>
+            <p>
+                <a href="../index.php">Home</a> /
+                <a href="order_tracking.php">My Orders</a> /
+                Order Details
+            </p>
+        </div>
+    </div>
 </section>
 
 <!-- ORDER DETAILS -->
 
 <section class="order-details section-padding">
-	<div class="container">
-		<div class="order-details-wrapper">
+    <div class="container">
+        <div class="order-details-wrapper">
 
-			<div class="order-header">
+            <div class="order-header">
 
-				<h2>
-					Order #<?php echo htmlspecialchars($order["order_number"]); ?>
-				</h2>
+                <h2>
+                    Order #<?php echo htmlspecialchars($order["order_number"]); ?>
+                </h2>
 
-				<p>
-					Placed on
-					<?php echo date("d M Y - h:i A", strtotime($order["created_at"])); ?>
-				</p>
+                <p>
+                    Placed on
+                    <?php echo date("d M Y - h:i A", strtotime($order["created_at"])); ?>
+                </p>
 
-			</div>
-            			<!-- ORDER INFORMATION -->
+            </div>
 
-			<div class="order-info-grid">
+            <!-- ORDER INFORMATION -->
 
-				<div class="order-info-card">
+            <div class="order-info-grid">
 
-					<h3>Order Information</h3>
+                <div class="order-info-card">
 
-					<div class="info-item">
-						<strong>Order Number</strong>
-						<span><?php echo htmlspecialchars($order["order_number"]); ?></span>
-					</div>
+                    <h3>Order Information</h3>
 
-					<div class="info-item">
-						<strong>Payment Method</strong>
-						<span>
+                    <div class="info-item">
+                        <strong>Order Number</strong>
+                        <span><?php echo htmlspecialchars($order["order_number"]); ?></span>
+                    </div>
 
-						<?php
+                    <div class="info-item">
+                        <strong>Payment Method</strong>
+                        <span>
 
-						if ($order["payment_method"] == "cash") {
-							echo "Cash On Delivery";
-						}
-						elseif ($order["payment_method"] == "card") {
-							echo "Credit / Debit Card";
-						}
-						else {
-							echo "-";
-						}
+                        <?php
 
-						?>
+                        if ($order["payment_method"] == "cash") {
+                            echo "Cash On Delivery";
+                        }
+                        elseif ($order["payment_method"] == "card") {
+                            echo "Credit / Debit Card";
+                        }
+                        else {
+                            echo "-";
+                        }
 
-						</span>
-					</div>
+                        ?>
 
-					<div class="info-item">
-						<strong>Payment Status</strong>
+                        </span>
+                    </div>
 
-						<span class="status <?php echo strtolower($order["payment_status"]); ?>">
-							<?php echo ucfirst($order["payment_status"]); ?>
-						</span>
+                    <div class="info-item">
 
-					</div>
+                        <strong>Payment Status</strong>
 
-					<div class="info-item">
-						<strong>Order Status</strong>
+                        <?php
 
-						<span class="status <?php echo strtolower($order["order_status"]); ?>">
-							<?php echo ucfirst($order["order_status"]); ?>
-						</span>
+                        $payment_status = strtolower($order["payment_status"]);
 
-					</div>
+                        if ($payment_status == "paid") {
 
-				</div>
+                            echo '<span class="status paid">Paid</span>';
 
+                        } elseif ($payment_status == "pending") {
 
-				<!-- DELIVERY INFORMATION -->
+                            echo '<span class="status unpaid">Pending</span>';
 
-				<div class="order-info-card">
+                        } elseif ($payment_status == "failed") {
 
-					<h3>Delivery Information</h3>
+                            echo '<span class="status failed">Failed</span>';
 
-					<div class="info-item">
-						<strong>Address</strong>
-						<span><?php echo htmlspecialchars($order["delivery_address"]); ?></span>
-					</div>
+                        } else {
 
-					<div class="info-item">
-						<strong>City</strong>
-						<span><?php echo htmlspecialchars($order["city"]); ?></span>
-					</div>
+                            echo '<span class="status">' . htmlspecialchars($payment_status) . '</span>';
 
-					<div class="info-item">
-						<strong>Notes</strong>
-						<span>
+                        }
 
-						<?php
+                        ?>
 
-						if (!empty($order["order_notes"])) {
-							echo htmlspecialchars($order["order_notes"]);
-						}
-						else {
-							echo "No Notes";
-						}
+                    </div>
 
-						?>
+                    <div class="info-item">
 
-						</span>
-					</div>
+                        <strong>Order Status</strong>
 
-				</div>
+                        <?php
 
-			</div>
+                        $order_status = strtolower($order["order_status"]);
 
+                        if ($order_status == "new") {
 
-			<!-- ORDER ITEMS -->
+                            echo '<span class="status pending">New</span>';
 
-			<div class="order-items">
+                        } elseif ($order_status == "preparing") {
 
-				<h3>Ordered Products</h3>
+                            echo '<span class="status preparing">Preparing</span>';
 
-				<table class="order-items-table">
+                        } elseif ($order_status == "on_the_way") {
 
-					<thead>
+                            echo '<span class="status on-the-way">On The Way</span>';
 
-						<tr>
+                        } elseif ($order_status == "delivered") {
 
-							<th>Product</th>
-							<th>Price</th>
-							<th>Qty</th>
-							<th>Subtotal</th>
+                            echo '<span class="status delivered">Delivered</span>';
 
-						</tr>
+                        } elseif ($order_status == "cancelled") {
 
-					</thead>
+                            echo '<span class="status cancelled">Cancelled</span>';
 
-					<tbody>
+                        } else {
 
-					<?php while($item = mysqli_fetch_assoc($get_items)) { ?>
+                            echo '<span class="status">' . htmlspecialchars($order_status) . '</span>';
 
-						<tr>
+                        }
 
-							<td>
+                        ?>
 
-								<div class="order-product">
+                    </div>
 
-									<div class="order-product-image">
+                </div>
 
-										<img src="../assets/uploads/menu/<?php echo $item["image"]; ?>" alt="<?php echo htmlspecialchars($item["name"]); ?>">
 
-									</div>
+                <!-- DELIVERY INFORMATION -->
 
-									<div class="order-product-info">
+                <div class="order-info-card">
 
-										<h4><?php echo htmlspecialchars($item["name"]); ?></h4>
+                    <h3>Delivery Information</h3>
 
-									</div>
+                    <div class="info-item">
+                        <strong>Address</strong>
+                        <span><?php echo htmlspecialchars($order["delivery_address"]); ?></span>
+                    </div>
 
-								</div>
+                    <div class="info-item">
+                        <strong>City</strong>
+                        <span><?php echo htmlspecialchars($order["city"]); ?></span>
+                    </div>
 
-							</td>
+                    <div class="info-item">
+                        <strong>Notes</strong>
+                        <span>
 
-							<td>
-								<?php echo number_format($item["price"],2); ?>$
-							</td>
+                        <?php
 
-							<td>
-								<?php echo $item["quantity"]; ?>
-							</td>
+                        if (!empty($order["order_notes"])) {
+                            echo htmlspecialchars($order["order_notes"]);
+                        }
+                        else {
+                            echo "No Notes";
+                        }
 
-							<td>
-								<?php echo number_format($item["subtotal"],2); ?>$
-							</td>
+                        ?>
 
-						</tr>
+                        </span>
+                    </div>
 
-					<?php } ?>
+                </div>
 
-					</tbody>
+            </div>
 
-				</table>
 
-			</div>
-            			<!-- ORDER SUMMARY -->
+            <!-- ORDER ITEMS -->
 
-			<div class="order-summary">
+            <div class="order-items">
 
-				<h3>Order Summary</h3>
+                <h3>Ordered Products</h3>
 
-				<div class="summary-item">
-					<span>Subtotal</span>
-					<span><?php echo number_format($order["subtotal"],2); ?>$</span>
-				</div>
+                <table class="order-items-table">
 
-				<div class="summary-item">
-					<span>Discount</span>
-					<span><?php echo number_format($order["discount"],2); ?>$</span>
-				</div>
+                    <thead>
 
-				<div class="summary-item">
-					<span>Delivery Charges</span>
-					<span><?php echo number_format($order["delivery_charges"],2); ?>$</span>
-				</div>
+                        <tr>
 
-				<div class="summary-item total">
-					<span>Grand Total</span>
-					<span><?php echo number_format($order["total"],2); ?> $</span>
-				</div>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th>Subtotal</th>
 
-			</div>
+                        </tr>
 
+                    </thead>
 
-			<!-- BUTTONS -->
+                    <tbody>
 
-			<div class="order-details-buttons">
+                    <?php while($item = mysqli_fetch_assoc($get_items)) { ?>
 
-				<a href="order_tracking.php" class="btn-secondary">
-					<i class="fa-solid fa-arrow-left"></i>&nbsp;
-					Back To Orders
-				</a>
+                        <tr>
 
-				<a href="../index.php" class="btn-primary">
-					<i class="fa-solid fa-utensils"></i>&nbsp;
-					Continue Shopping
-				</a>
+                            <td>
 
-			</div>
+                                <div class="order-product">
 
-		</div>
-	</div>
+                                    <div class="order-product-image">
+
+                                        <img src="../assets/uploads/menu/<?php echo $item["image"]; ?>" alt="<?php echo htmlspecialchars($item["name"]); ?>">
+
+                                    </div>
+
+                                    <div class="order-product-info">
+
+                                        <h4><?php echo htmlspecialchars($item["name"]); ?></h4>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                <?php echo number_format($item["price"],2); ?>$
+                            </td>
+
+                            <td>
+                                <?php echo $item["quantity"]; ?>
+                            </td>
+
+                            <td>
+                                <?php echo number_format($item["subtotal"],2); ?>$
+                            </td>
+
+                        </tr>
+
+                    <?php } ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- ORDER SUMMARY -->
+
+            <div class="order-summary">
+
+                <h3>Order Summary</h3>
+
+                <div class="summary-item">
+                    <span>Subtotal</span>
+                    <span><?php echo number_format($order["subtotal"],2); ?>$</span>
+                </div>
+
+                <div class="summary-item">
+                    <span>Discount</span>
+                    <span><?php echo number_format($order["discount"],2); ?>$</span>
+                </div>
+
+                <div class="summary-item">
+                    <span>Delivery Charges</span>
+                    <span><?php echo number_format($order["delivery_charges"],2); ?>$</span>
+                </div>
+
+                <div class="summary-item total">
+                    <span>Grand Total</span>
+                    <span><?php echo number_format($order["total"],2); ?> $</span>
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="order-details-buttons">
+
+                <a href="order_tracking.php" class="btn-secondary">
+                    <i class="fa-solid fa-arrow-left"></i>&nbsp;
+                    Back To Orders
+                </a>
+
+                <a href="../index.php" class="btn-primary">
+                    <i class="fa-solid fa-utensils"></i>&nbsp;
+                    Continue Shopping
+                </a>
+
+            </div>
+
+        </div>
+    </div>
 </section>
 
 <?php

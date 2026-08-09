@@ -184,16 +184,6 @@ if (isset($_POST["send_message"])) {
 
 <!-- GOOGLE MAP -->
 
-<section class="contact-map">
-
-	<iframe
-		src="https://www.google.com/maps?q=Gujranwala,Pakistan&output=embed"
-		loading="lazy"
-		allowfullscreen>
-	</iframe>
-
-</section>
-
 <?php
 include "includes/footer.php";
 ?>

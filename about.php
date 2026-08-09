@@ -27,7 +27,7 @@ include "includes/header.php";
         <div class="about-wrapper">
 
             <div class="about-image">
-                <img src="assets/images/hero/pizza.png" alt="Urban Bites">
+                <img src="assets/images/hero/hero-pizza.png" alt="Urban Bites">
             </div>
 
             <div class="about-content">
