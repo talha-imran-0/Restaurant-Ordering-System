@@ -108,20 +108,6 @@ $get_menu_items = mysqli_query($conn, "SELECT * FROM menu_items WHERE status = 1
 
 <!-- Featured Menu Section End -->
 
-<!-- Offer Banner Section Start -->
-
-<section class="offer-banner">
-    <div class="container">
-        <div class="offer-content">
-            <h5>LIMITED TIME OFFER</h5>
-            <h2>Get 30% OFF On Your Favorite Burger</h2>
-            <p>Don't miss this delicious deal! Order now and enjoy fresh,hot burgers with an exclusive discount for a limited time.</p>
-            <a href="#" class="offer-btn">Order Now</a>
-        </div>
-    </div>
-</section>
-
-<!-- Offer Banner Section End -->
 
 <!-- Why Choose Us Section Start -->
 
@@ -223,8 +209,8 @@ $get_menu_items = mysqli_query($conn, "SELECT * FROM menu_items WHERE status = 1
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="menu.php">Menu</a></li>
-                    <li><a href="categories.php">Categories</a></li>
+                    <li><a href="#featured-menu">Menu</a></li>
+                    <li><a href="#categories">Categories</a></li>
                     <li><a href="about.php">About</a></li>
                     <li><a href="contact.php">Contact</a></li>
                 </ul>

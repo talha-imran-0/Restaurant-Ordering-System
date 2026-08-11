@@ -80,8 +80,8 @@ if (isset($_POST["place_order"])) {
 				'$delivery',
 				'$total',
 				'$payment_method',
-				'Pending',
-				'Pending',
+				'pending',
+				'new',
 				NOW(),
 				NOW()
 			)
@@ -257,7 +257,7 @@ $grand_total = $subtotal + $delivery;
 								<p>Quantity : <?php echo $item["quantity"]; ?></p>
 							</div>
 
-							<div class="checkout-product-price">$<?php echo number_format($item_total, 2); ?></div>
+							<div class="checkout-product-price"><?php echo number_format($item_total,2); ?> $</div>
 						</div>
 
 						<?php
@@ -267,17 +267,17 @@ $grand_total = $subtotal + $delivery;
 						<div class="checkout-total">
 							<div class="checkout-total-item">
 								<span>Subtotal</span>
-								<span>$<?php echo number_format($subtotal, 2); ?></span>
+								<span><?php echo number_format($subtotal,2); ?> $</span>
 							</div>
 
 							<div class="checkout-total-item">
 								<span>Delivery Charges</span>
-								<span>$<?php echo number_format($delivery, 2); ?></span>
+								<span><?php echo number_format($delivery,2); ?> $</span>
 							</div>
 
 							<div class="checkout-total-item grand-total">
 								<span>Grand Total</span>
-								<span>$<?php echo number_format($grand_total, 2); ?></span>
+								<span><?php echo number_format($grand_total,2); ?> $</span>
 							</div>
 						</div>
 
@@ -287,11 +287,13 @@ $grand_total = $subtotal + $delivery;
 							<h3>Payment Method</h3>
 
 							<label>
-								<input type="radio" name="payment_method" value="Cash On Delivery" checked> Cash On Delivery
+								<input type="radio" name="payment_method" value="cash" checked>
+								Cash On Delivery
 							</label>
 
 							<label>
-								<input type="radio" name="payment_method" value="Credit Card"> Credit / Debit Card
+								<input type="radio" name="payment_method" value="card">
+								Credit / Debit Card
 							</label>
 						</div>
 

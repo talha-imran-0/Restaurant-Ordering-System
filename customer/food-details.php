@@ -68,6 +68,31 @@ if (isset($_POST["add_to_cart"])) {
 }
 
 
+	/* BUY NOW */
+
+if (isset($_POST["buy_now"])) {
+
+    $quantity = (int) $_POST["quantity"];
+
+    if ($quantity < 1) {
+        $quantity = 1;
+    }
+
+    // Sirf isi product ko cart me rakho
+    $_SESSION["cart"] = [];
+
+    $_SESSION["cart"][$product_id] = [
+        "id"       => $product["id"],
+        "name"     => $product["name"],
+        "price"    => $product["price"],
+        "image"    => $product["image"],
+        "quantity" => $quantity
+    ];
+
+    header("Location: checkout.php");
+    exit();
+}
+
 	/* RELATED PRODUCTS */
 
 $get_related = mysqli_query($conn, "
@@ -110,7 +135,7 @@ $get_related = mysqli_query($conn, "
 					<span>(120 Reviews)</span>
 				</div>
 
-				<h3 class="food-price">$<?php echo number_format($product["price"], 2); ?></h3>
+				<h3 class="food-price">$ <?php echo number_format($product["price"], 2); ?></h3>
 				<p><?php echo htmlspecialchars($product["description"]); ?></p>
 
 				<form method="POST">
@@ -130,9 +155,9 @@ $get_related = mysqli_query($conn, "
 							<i class="fa-solid fa-cart-plus"></i>&nbsp; Add To Cart
 						</button>
 
-						<a href="cart.php" class="btn-secondary">
+						<button type="submit" name="buy_now" class="btn-secondary">
 							<i class="fa-solid fa-bag-shopping"></i>&nbsp; Buy Now
-						</a>
+						</button>
 					</div>
 				</form>
 			</div>
@@ -173,7 +198,7 @@ $get_related = mysqli_query($conn, "
 
 			<div class="info-item">
 				<strong>Price</strong>
-				<span>$<?php echo number_format($product["price"], 2); ?></span>
+				<span>$ <?php echo number_format($product["price"], 2); ?></span>
 			</div>
 
 			<div class="info-item">
@@ -212,7 +237,7 @@ $get_related = mysqli_query($conn, "
 					<p><?php echo htmlspecialchars($related["description"]); ?></p>
 
 					<div class="menu-info">
-						<span class="price">$<?php echo number_format($related["price"], 2); ?></span>
+						<span class="price">$ <?php echo number_format($related["price"], 2); ?></span>
 						<span class="rating">★★★★★</span>
 					</div>
 
