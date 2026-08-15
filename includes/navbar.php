@@ -16,96 +16,100 @@
 
             <!-- Desktop Menu -->
             <ul class="nav-menu">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="index.php#featured-menu">Menu</a></li>
-                <li><a href="index.php#categories">Categories</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="contact.php">Contact</a></li>
+                <li>
+                    <a href="index.php">Home</a>
+                </li>
+                <li>
+                    <a href="index.php#featured-menu">Menu</a>
+                </li>
+                <li>
+                    <a href="index.php#categories">Categories</a>
+                </li>
+                <li>
+                    <a href="about.php">About</a>
+                </li>
+                <li>
+                    <a href="contact.php">Contact</a>
+                </li>
 
-<?php if (isset($_SESSION["admin_id"])) { ?>
+                <?php if (isset($_SESSION["admin_id"])) { ?>
 
-<li class="user-dropdown">
+                    <!-- ADMIN DESKTOP -->
+                    <li class="user-dropdown">
+                        <a href="#">
+                            <i class="fa-solid fa-user-shield"></i>
+                            <span><?php echo htmlspecialchars($_SESSION["admin_name"]); ?></span>
+                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                        </a>
 
-    <a href="#">
-        <i class="fa-solid fa-user-shield"></i>
-        <span><?php echo htmlspecialchars($_SESSION["admin_name"]); ?></span>
-        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
-    </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="admin/dashboard.php">
+                                    <i class="fa-solid fa-gauge"></i>
+                                    Dashboard
+                                </a>
+                            </li>
 
-    <ul class="dropdown-menu">
+                            <!-- ADMIN LOGOUT -->
+                            <li>
+                                <form method="POST" action="customer/logout.php" style="margin:0;">
+                                    <?php csrf_input(); ?>
+                                    <button type="submit" class="navbar-logout-btn">
+                                        <i class="fa-solid fa-right-from-bracket"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
 
-        <li>
-            <a href="admin/dashboard.php">
-                <i class="fa-solid fa-gauge"></i>
-                Dashboard
-            </a>
-        </li>
+                <?php } elseif (isset($_SESSION["user_id"])) { ?>
 
-        <li>
-            <a href="admin/settings.php">
-                <i class="fa-solid fa-gear"></i>
-                Settings
-            </a>
-        </li>
+                    <!-- CUSTOMER DESKTOP -->
+                    <li class="user-dropdown">
+                        <a href="#">
+                            <i class="fa-solid fa-circle-user"></i>
+                            <span><?php echo htmlspecialchars(explode(" ", $_SESSION["user_name"])[0]); ?></span>
+                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                        </a>
 
-        <li>
-            <a href="admin/logout.php">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
-            </a>
-        </li>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="customer/profile.php">
+                                    <i class="fa-solid fa-user"></i>
+                                    My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="customer/order_tracking.php">
+                                    <i class="fa-solid fa-bag-shopping"></i>
+                                    My Orders
+                                </a>
+                            </li>
 
-    </ul>
+                            <!-- CUSTOMER LOGOUT -->
+                            <li>
+                                <form method="POST" action="admin/logout.php" style="display:inline;">
+                                    <?php csrf_input(); ?>
+                                    <button type="submit" class="navbar-logout-btn"  name="logout">
+                                        <i class="fa-solid fa-right-from-bracket"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
 
-</li>
+                <?php } else { ?>
 
-<?php } elseif (isset($_SESSION["user_id"])) { ?>
+                    <!-- LOGIN -->
+                    <li>
+                        <a href="customer/login.php" class="login-btn">
+                            Login
+                        </a>
+                    </li>
 
-<li class="user-dropdown">
-
-    <a href="#">
-        <i class="fa-solid fa-circle-user"></i>
-        <span><?php echo htmlspecialchars(explode(" ", $_SESSION["user_name"])[0]); ?></span>
-        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
-    </a>
-
-    <ul class="dropdown-menu">
-
-        <li>
-            <a href="customer/profile.php">
-                <i class="fa-solid fa-user"></i>
-                My Profile
-            </a>
-        </li>
-
-        <li>
-            <a href="customer/order_tracking.php">
-                <i class="fa-solid fa-bag-shopping"></i>
-                My Orders
-            </a>
-        </li>
-
-        <li>
-            <a href="customer/logout.php">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
-            </a>
-        </li>
-
-    </ul>
-
-</li>
-
-<?php } else { ?>
-
-<li>
-    <a href="customer/login.php" class="login-btn">
-        Login
-    </a>
-</li>
-
-<?php } ?>
-
+                <?php } ?>
             </ul>
 
         </div>
@@ -122,67 +126,126 @@
     </div>
 
     <ul class="sidebar-menu">
-        <li><a href="index.php">Home</a></li>
-        <li><a href="index.php#featured-menu">Menu</a></li>
-        <li><a href="index.php#categories">Categories</a></li>
-        <li><a href="about.php">About</a></li>
-        <li><a href="contact.php">Contact</a></li>
 
         <?php if (isset($_SESSION["admin_id"])) { ?>
 
-    <li>
-        <a href="admin/dashboard.php">
-            <?php echo htmlspecialchars($_SESSION["admin_name"]); ?>
-        </a>
-    </li>
+            <!-- ADMIN MOBILE -->
+            <li>
+                <a href="admin/dashboard.php">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <?php echo htmlspecialchars($_SESSION["admin_name"]); ?>
+                </a>
+            </li>
 
-    <li>
-        <a href="admin/dashboard.php">
-            Dashboard
-        </a>
-    </li>
+            <li>
+                <a href="admin/dashboard.php">
+                    <i class="fa-solid fa-gauge"></i>
+                    Dashboard
+                </a>
+            </li>
 
-    <li>
-        <a href="admin/settings.php">
-            Settings
-        </a>
-    </li>
+            <li>
+                <a href="admin/settings.php">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+            </li>
 
-    <li>
-        <a href="admin/logout.php" class="sidebar-login-btn">
-            Logout
-        </a>
-    </li>
+            <!-- DIVIDER -->
+            <li class="sidebar-divider"></li>
 
-<?php } elseif (isset($_SESSION["user_id"])) { ?>
+        <?php } elseif (isset($_SESSION["user_id"])) { ?>
 
-    <li>
-        <a href="customer/profile.php">
-            <?php echo htmlspecialchars($_SESSION["user_name"]); ?>
-        </a>
-    </li>
+            <!-- CUSTOMER MOBILE -->
+            <li>
+                <a href="customer/profile.php">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <?php echo htmlspecialchars($_SESSION["user_name"]); ?>
+                </a>
+            </li>
 
-    <li>
-        <a href="customer/order_tracking.php">
-            My Orders
-        </a>
-    </li>
+            <li>
+                <a href="customer/order_tracking.php">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    My Orders
+                </a>
+            </li>
 
-    <li>
-        <a href="customer/logout.php" class="sidebar-login-btn">
-            Logout
-        </a>
-    </li>
+            <!-- DIVIDER -->
+            <li class="sidebar-divider"></li>
 
-<?php } else { ?>
+        <?php } ?>
 
-    <li>
-        <a href="customer/login.php" class="sidebar-login-btn">
-            Login
-        </a>
-    </li>
+        <!-- MAIN MENU -->
+        <li>
+            <a href="index.php">
+                Home
+            </a>
+        </li>
 
-<?php } ?>
+        <li>
+            <a href="index.php#featured-menu">
+                Menu
+            </a>
+        </li>
+
+        <li>
+            <a href="index.php#categories">
+                Categories
+            </a>
+        </li>
+
+        <li>
+            <a href="about.php">
+                About
+            </a>
+        </li>
+
+        <li>
+            <a href="contact.php">
+                Contact
+            </a>
+        </li>
+
+        <?php if (isset($_SESSION["admin_id"])) { ?>
+
+            <!-- ADMIN LOGOUT -->
+            <li class="sidebar-logout">
+                <form method="POST" action="admin/logout.php">
+                    <?php csrf_input(); ?>
+
+                    <button type="submit" class="navbar-logout-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </form>
+            </li>
+
+        <?php } elseif (isset($_SESSION["user_id"])) { ?>
+
+            <!-- CUSTOMER LOGOUT -->
+            <li class="sidebar-logout">
+                <form method="POST" action="customer/logout.php">
+                    <?php csrf_input(); ?>
+
+                    <button type="submit" class="navbar-logout-btn" name="logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </form>
+            </li>
+
+        <?php } else { ?>
+
+            <!-- MOBILE LOGIN -->
+            <li>
+                <a href="customer/login.php" class="sidebar-login-btn">
+                    Login
+                </a>
+            </li>
+
+        <?php } ?>
 
     </ul>
+</div>
 </div>

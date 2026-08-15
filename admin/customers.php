@@ -1,17 +1,14 @@
 <?php
 
+session_start();
+
 require_once "../includes/config.php";
+require_once "../php/Auth.php";
 
-// Check Admin Login
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: login.php");
-    exit();
-}
+/* CHECK ADMIN LOGIN */
+require_admin();
 
-// =========================
-// Delete Customer + All Related Data
-// =========================
-
+/* DELETE CUSTOMER + ALL RELATED DATA */
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
 
@@ -19,11 +16,11 @@ if (isset($_GET['delete'])) {
     // Contact messages are linked by email in this project.
     $get_customer = mysqli_query(
         $conn,
-        "SELECT email FROM users WHERE id='$id' AND role='customer' LIMIT 1"
+        "SELECT email FROM users WHERE id = '$id' AND role = 'customer' LIMIT 1"
     );
 
     if ($get_customer && mysqli_num_rows($get_customer) > 0) {
-        $customer = mysqli_fetch_assoc($get_customer);
+        $customer       = mysqli_fetch_assoc($get_customer);
         $customer_email = mysqli_real_escape_string($conn, $customer['email']);
 
         // Start transaction so the deletion is all-or-nothing.
@@ -35,7 +32,7 @@ if (isset($_GET['delete'])) {
                 $conn,
                 "DELETE FROM order_items
                  WHERE order_id IN (
-                     SELECT id FROM orders WHERE user_id='$id'
+                     SELECT id FROM orders WHERE user_id = '$id'
                  )"
             )) {
                 throw new Exception("Could not delete order items.");
@@ -46,7 +43,7 @@ if (isset($_GET['delete'])) {
                 $conn,
                 "DELETE FROM payments
                  WHERE order_id IN (
-                     SELECT id FROM orders WHERE user_id='$id'
+                     SELECT id FROM orders WHERE user_id = '$id'
                  )"
             )) {
                 throw new Exception("Could not delete payments.");
@@ -55,7 +52,7 @@ if (isset($_GET['delete'])) {
             // Delete the customer's orders.
             if (!mysqli_query(
                 $conn,
-                "DELETE FROM orders WHERE user_id='$id'"
+                "DELETE FROM orders WHERE user_id = '$id'"
             )) {
                 throw new Exception("Could not delete orders.");
             }
@@ -65,7 +62,7 @@ if (isset($_GET['delete'])) {
                 $conn,
                 "DELETE FROM cart_items
                  WHERE cart_id IN (
-                     SELECT id FROM carts WHERE user_id='$id'
+                     SELECT id FROM carts WHERE user_id = '$id'
                  )"
             )) {
                 throw new Exception("Could not delete cart items.");
@@ -74,7 +71,7 @@ if (isset($_GET['delete'])) {
             // Delete the customer's cart(s).
             if (!mysqli_query(
                 $conn,
-                "DELETE FROM carts WHERE user_id='$id'"
+                "DELETE FROM carts WHERE user_id = '$id'"
             )) {
                 throw new Exception("Could not delete carts.");
             }
@@ -83,7 +80,7 @@ if (isset($_GET['delete'])) {
             // so remove messages that belong to this customer's email.
             if (!mysqli_query(
                 $conn,
-                "DELETE FROM contact_messages WHERE email='$customer_email'"
+                "DELETE FROM contact_messages WHERE email = '$customer_email'"
             )) {
                 throw new Exception("Could not delete contact messages.");
             }
@@ -91,7 +88,7 @@ if (isset($_GET['delete'])) {
             // Finally delete the customer account.
             if (!mysqli_query(
                 $conn,
-                "DELETE FROM users WHERE id='$id' AND role='customer'"
+                "DELETE FROM users WHERE id = '$id' AND role = 'customer'"
             )) {
                 throw new Exception("Could not delete customer.");
             }
@@ -107,28 +104,21 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-
-// =========================
-// Update Status
-// =========================
-
+/* UPDATE STATUS */
 if (isset($_POST['update_status'])) {
-    $id = (int)$_POST['user_id'];
+    $id     = (int)$_POST['user_id'];
     $status = (int)$_POST['status'];
 
     mysqli_query(
         $conn,
-        "UPDATE users SET status='$status' WHERE id='$id'"
+        "UPDATE users SET status = '$status' WHERE id = '$id'"
     );
 
     header("Location: customers.php");
     exit();
 }
 
-// =========================
-// Search
-// =========================
-
+/* SEARCH */
 $search = "";
 
 if (isset($_GET['search'])) {
@@ -141,9 +131,8 @@ if (isset($_GET['search'])) {
 $query = "
     SELECT *
     FROM users
-    WHERE role='customer'
-    AND
-    (
+    WHERE role = 'customer'
+    AND (
         name LIKE '%$search%'
         OR email LIKE '%$search%'
         OR phone LIKE '%$search%'
@@ -192,40 +181,40 @@ $get_customers = mysqli_query($conn, $query);
                 </tr>
             </thead>
             <tbody>
-            <?php
-            if (mysqli_num_rows($get_customers) > 0) {
-                while ($customer = mysqli_fetch_assoc($get_customers)) {
-            ?>
-                <tr>
-                    <td><?php echo $customer['id']; ?></td>
-                    <td><?php echo htmlspecialchars($customer['name']); ?></td>
-                    <td><?php echo htmlspecialchars($customer['email']); ?></td>
-                    <td><?php echo htmlspecialchars($customer['phone']); ?></td>
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="user_id" value="<?php echo $customer['id']; ?>">
-                            <select name="status" class="admin-status-select">
-                                <option value="1" <?php if($customer['status']==1) echo "selected"; ?>>Active</option>
-                                <option value="0" <?php if($customer['status']==0) echo "selected"; ?>>Inactive</option>
-                            </select>
-                            <button type="submit" name="update_status" class="admin-customer-save">Save</button>
-                        </form>
-                    </td>
-                    <td><?php echo date("d M Y", strtotime($customer['created_at'])); ?></td>
-                    <td>
-                        <a href="customers.php?delete=<?php echo $customer['id']; ?>" class="action delete" onclick="return confirm('Delete this customer?')">Delete</a>
-                    </td>
-                </tr>
-            <?php
+                <?php
+                if (mysqli_num_rows($get_customers) > 0) {
+                    while ($customer = mysqli_fetch_assoc($get_customers)) {
+                ?>
+                    <tr>
+                        <td><?php echo $customer['id']; ?></td>
+                        <td><?php echo htmlspecialchars($customer['name']); ?></td>
+                        <td><?php echo htmlspecialchars($customer['email']); ?></td>
+                        <td><?php echo htmlspecialchars($customer['phone']); ?></td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="user_id" value="<?php echo $customer['id']; ?>">
+                                <select name="status" class="admin-status-select">
+                                    <option value="1" <?php if ($customer['status'] == 1) echo "selected"; ?>>Active</option>
+                                    <option value="0" <?php if ($customer['status'] == 0) echo "selected"; ?>>Inactive</option>
+                                </select>
+                                <button type="submit" name="update_status" class="admin-customer-save">Save</button>
+                            </form>
+                        </td>
+                        <td><?php echo date("d M Y", strtotime($customer['created_at'])); ?></td>
+                        <td>
+                            <a href="customers.php?delete=<?php echo $customer['id']; ?>" class="action delete" onclick="return confirm('Delete this customer?')">Delete</a>
+                        </td>
+                    </tr>
+                <?php
+                    }
+                } else {
+                ?>
+                    <tr>
+                        <td colspan="7">No Customers Found.</td>
+                    </tr>
+                <?php
                 }
-            } else {
-            ?>
-                <tr>
-                    <td colspan="7">No Customers Found.</td>
-                </tr>
-            <?php
-            }
-            ?>
+                ?>
             </tbody>
         </table>
     </div>

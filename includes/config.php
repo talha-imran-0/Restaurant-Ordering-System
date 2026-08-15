@@ -1,20 +1,26 @@
 <?php
-session_start();
-// Show Errors (Source : Google)
+
+/* START SESSION SAFELY */
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+/* ERROR REPORTING */
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+/* TIMEZONE */
 
-
-// Set Timezone (Source : Google)
 date_default_timezone_set("Asia/Karachi");
 
+/* DATABASE */
 
 $server_name = "localhost";
 $user_name = "root";
 $password = "";
 $database_name = "restaurant_ordering_system";
-
 
 $conn = mysqli_connect(
     $server_name,
@@ -23,11 +29,13 @@ $conn = mysqli_connect(
     $database_name
 );
 
+/* CHECK CONNECTION */
 
-// Check Connection
-if (!$conn)
-{
-    die("Database Connection Failed: " . mysqli_connect_error());
+if (!$conn) {
+    die(
+        "Database Connection Failed: " .
+        mysqli_connect_error()
+    );
 }
 
 ?>

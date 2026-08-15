@@ -1,25 +1,21 @@
 <?php
 
+session_start();
+
 require_once "../includes/config.php";
+require_once "../php/Auth.php";
 
-// Check Admin Login
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: login.php");
-    exit();
-}
+/* CHECK ADMIN LOGIN */
+require_admin();
 
-// =========================
-// Add Menu Item
-// =========================
-
+/* ADD MENU ITEM */
 if (isset($_POST['add_menu'])) {
     $category_id = (int)$_POST['category_id'];
-    $name = mysqli_real_escape_string($conn, trim($_POST['name']));
+    $name        = mysqli_real_escape_string($conn, trim($_POST['name']));
     $description = mysqli_real_escape_string($conn, trim($_POST['description']));
-    $price = mysqli_real_escape_string($conn, trim($_POST['price']));
-    $status = (int)$_POST['status'];
-
-    $image = "";
+    $price       = mysqli_real_escape_string($conn, trim($_POST['price']));
+    $status      = (int)$_POST['status'];
+    $image       = "";
 
     if (!empty($_FILES['image']['name'])) {
         $image = time() . "_" . $_FILES['image']['name'];
@@ -32,33 +28,28 @@ if (isset($_POST['add_menu'])) {
 
     mysqli_query(
         $conn,
-        "INSERT INTO menu_items (category_id,name,description,price,image,status) VALUES ('$category_id','$name','$description','$price','$image','$status')"
+        "INSERT INTO menu_items (category_id, name, description, price, image, status) 
+         VALUES ('$category_id', '$name', '$description', '$price', '$image', '$status')"
     );
 
     header("Location: menu.php");
     exit();
 }
 
-// =========================
-// Delete Menu Item
-// =========================
-
+/* DELETE MENU ITEM */
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
 
     mysqli_query(
         $conn,
-        "DELETE FROM menu_items WHERE id='$id'"
+        "DELETE FROM menu_items WHERE id = '$id'"
     );
 
     header("Location: menu.php");
     exit();
 }
 
-// =========================
-// Get Menu Item For Edit
-// =========================
-
+/* GET MENU ITEM FOR EDIT */
 $edit_menu = null;
 
 if (isset($_GET['edit'])) {
@@ -66,7 +57,7 @@ if (isset($_GET['edit'])) {
 
     $result = mysqli_query(
         $conn,
-        "SELECT * FROM menu_items WHERE id='$id' LIMIT 1"
+        "SELECT * FROM menu_items WHERE id = '$id' LIMIT 1"
     );
 
     if (mysqli_num_rows($result) > 0) {
@@ -74,17 +65,14 @@ if (isset($_GET['edit'])) {
     }
 }
 
-// =========================
-// Update Menu Item
-// =========================
-
+/* UPDATE MENU ITEM */
 if (isset($_POST['update_menu'])) {
-    $id = (int)$_POST['menu_id'];
+    $id          = (int)$_POST['menu_id'];
     $category_id = (int)$_POST['category_id'];
-    $name = mysqli_real_escape_string($conn, trim($_POST['name']));
+    $name        = mysqli_real_escape_string($conn, trim($_POST['name']));
     $description = mysqli_real_escape_string($conn, trim($_POST['description']));
-    $price = mysqli_real_escape_string($conn, trim($_POST['price']));
-    $status = (int)$_POST['status'];
+    $price       = mysqli_real_escape_string($conn, trim($_POST['price']));
+    $status      = (int)$_POST['status'];
 
     if (!empty($_FILES['image']['name'])) {
         $image = time() . "_" . $_FILES['image']['name'];
@@ -96,12 +84,16 @@ if (isset($_POST['update_menu'])) {
 
         mysqli_query(
             $conn,
-            "UPDATE menu_items SET category_id='$category_id', name='$name', description='$description', price='$price', image='$image', status='$status' WHERE id='$id'"
+            "UPDATE menu_items 
+             SET category_id = '$category_id', name = '$name', description = '$description', price = '$price', image = '$image', status = '$status' 
+             WHERE id = '$id'"
         );
     } else {
         mysqli_query(
             $conn,
-            "UPDATE menu_items SET category_id='$category_id', name='$name', description='$description', price='$price', status='$status' WHERE id='$id'"
+            "UPDATE menu_items 
+             SET category_id = '$category_id', name = '$name', description = '$description', price = '$price', status = '$status' 
+             WHERE id = '$id'"
         );
     }
 
@@ -109,22 +101,19 @@ if (isset($_POST['update_menu'])) {
     exit();
 }
 
-// =========================
-// Get Categories
-// =========================
-
+/* GET CATEGORIES */
 $get_category_list = mysqli_query(
     $conn,
-    "SELECT * FROM categories WHERE status=1 ORDER BY name ASC"
+    "SELECT * FROM categories WHERE status = 1 ORDER BY name ASC"
 );
 
-// =========================
-// Get Menu Items
-// =========================
-
+/* GET MENU ITEMS */
 $get_menu = mysqli_query(
     $conn,
-    "SELECT menu_items.*, categories.name AS category_name FROM menu_items LEFT JOIN categories ON menu_items.category_id = categories.id ORDER BY menu_items.id DESC"
+    "SELECT menu_items.*, categories.name AS category_name 
+     FROM menu_items 
+     LEFT JOIN categories ON menu_items.category_id = categories.id 
+     ORDER BY menu_items.id DESC"
 );
 
 ?>
@@ -138,6 +127,7 @@ $get_menu = mysqli_query(
     <link rel="stylesheet" href="../assets/css/admin.css">
 </head>
 <body>
+
 <?php include "sidebar.php"; ?>
 
 <div class="main">
@@ -205,45 +195,47 @@ $get_menu = mysqli_query(
                 </tr>
             </thead>
             <tbody>
-            <?php
-            if (mysqli_num_rows($get_menu) > 0) {
-                while ($menu = mysqli_fetch_assoc($get_menu)) {
-            ?>
-                <tr>
-                    <td><?php echo $menu['id']; ?></td>
-                    <td>
-                        <?php if (!empty($menu['image'])) { ?>
-                            <img src="../assets/uploads/menu/<?php echo htmlspecialchars($menu['image']); ?>" class="menu-image" alt="Food Image">
-                        <?php } else { echo "No Image"; } ?>
-                    </td>
-                    <td><?php echo htmlspecialchars($menu['category_name']); ?></td>
-                    <td><?php echo htmlspecialchars($menu['name']); ?></td>
-                    <td><?php echo htmlspecialchars($menu['description']); ?></td>
-                    <td>$<?php echo number_format($menu['price'], 2); ?></td>
-                    <td>
-                        <?php
-                        if ($menu['status'] == 1) {
-                            echo "Active";
-                        } else {
-                            echo "Inactive";
-                        }
-                        ?>
-                    </td>
-                    <td>
-                        <a href="menu.php?edit=<?php echo $menu['id']; ?>" class="action-btn edit">Edit</a>
-                        <a href="menu.php?delete=<?php echo $menu['id']; ?>" class="action-btn delete" onclick="return confirm('Delete this menu item?')">Delete</a>
-                    </td>
-                </tr>
-            <?php
+                <?php
+                if (mysqli_num_rows($get_menu) > 0) {
+                    while ($menu = mysqli_fetch_assoc($get_menu)) {
+                ?>
+                    <tr>
+                        <td><?php echo $menu['id']; ?></td>
+                        <td>
+                            <?php if (!empty($menu['image'])) { ?>
+                                <img src="../assets/uploads/menu/<?php echo htmlspecialchars($menu['image']); ?>" class="menu-image" alt="Food Image">
+                            <?php } else {
+                                echo "No Image";
+                            } ?>
+                        </td>
+                        <td><?php echo htmlspecialchars($menu['category_name']); ?></td>
+                        <td><?php echo htmlspecialchars($menu['name']); ?></td>
+                        <td><?php echo htmlspecialchars($menu['description']); ?></td>
+                        <td>$<?php echo number_format($menu['price'], 2); ?></td>
+                        <td>
+                            <?php
+                            if ($menu['status'] == 1) {
+                                echo "Active";
+                            } else {
+                                echo "Inactive";
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <a href="menu.php?edit=<?php echo $menu['id']; ?>" class="action-btn edit">Edit</a>
+                            <a href="menu.php?delete=<?php echo $menu['id']; ?>" class="action-btn delete" onclick="return confirm('Delete this menu item?')">Delete</a>
+                        </td>
+                    </tr>
+                <?php
+                    }
+                } else {
+                ?>
+                    <tr>
+                        <td colspan="8">No Menu Items Found.</td>
+                    </tr>
+                <?php
                 }
-            } else {
-            ?>
-                <tr>
-                    <td colspan="8">No Menu Items Found.</td>
-                </tr>
-            <?php
-            }
-            ?>
+                ?>
             </tbody>
         </table>
     </div>

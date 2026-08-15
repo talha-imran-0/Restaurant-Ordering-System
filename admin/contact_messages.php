@@ -1,49 +1,40 @@
 <?php
 
+session_start();
+
 require_once "../includes/config.php";
+require_once "../php/Auth.php";
 
-// Check Admin Login
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: login.php");
-    exit();
-}
+/* CHECK ADMIN LOGIN */
+require_admin();
 
-// =======================
-// Mark As Read
-// =======================
-
+/* MARK AS READ */
 if (isset($_GET['read'])) {
     $id = (int)$_GET['read'];
 
     mysqli_query(
         $conn,
-        "UPDATE contact_messages SET status='Read' WHERE id='$id'"
+        "UPDATE contact_messages SET status = 'Read' WHERE id = '$id'"
     );
 
     header("Location: contact_messages.php");
     exit();
 }
 
-// =======================
-// Delete Message
-// =======================
-
+/* DELETE MESSAGE */
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
 
     mysqli_query(
         $conn,
-        "DELETE FROM contact_messages WHERE id='$id'"
+        "DELETE FROM contact_messages WHERE id = '$id'"
     );
 
     header("Location: contact_messages.php");
     exit();
 }
 
-// =======================
-// Search
-// =======================
-
+/* SEARCH */
 $search = "";
 
 if (isset($_GET['search'])) {
@@ -53,10 +44,7 @@ if (isset($_GET['search'])) {
     );
 }
 
-// =======================
-// Get Messages
-// =======================
-
+/* GET MESSAGES */
 $query = "
     SELECT *
     FROM contact_messages
@@ -111,61 +99,61 @@ $get_messages = mysqli_query($conn, $query);
                 </tr>
             </thead>
             <tbody>
-            <?php
-            if ($get_messages && mysqli_num_rows($get_messages) > 0) {
-                while ($message = mysqli_fetch_assoc($get_messages)) {
-            ?>
-                <tr>
-                    <!-- ID -->
-                    <td><?php echo $message['id']; ?></td>
+                <?php
+                if ($get_messages && mysqli_num_rows($get_messages) > 0) {
+                    while ($message = mysqli_fetch_assoc($get_messages)) {
+                ?>
+                    <tr>
+                        <!-- ID -->
+                        <td><?php echo $message['id']; ?></td>
 
-                    <!-- NAME -->
-                    <td><?php echo htmlspecialchars($message['name']); ?></td>
+                        <!-- NAME -->
+                        <td><?php echo htmlspecialchars($message['name']); ?></td>
 
-                    <!-- EMAIL -->
-                    <td><?php echo htmlspecialchars($message['email']); ?></td>
+                        <!-- EMAIL -->
+                        <td><?php echo htmlspecialchars($message['email']); ?></td>
 
-                    <!-- SUBJECT -->
-                    <td><?php echo htmlspecialchars($message['subject']); ?></td>
+                        <!-- SUBJECT -->
+                        <td><?php echo htmlspecialchars($message['subject']); ?></td>
 
-                    <!-- MESSAGE -->
-                    <td><?php echo nl2br(htmlspecialchars($message['message'])); ?></td>
+                        <!-- MESSAGE -->
+                        <td><?php echo nl2br(htmlspecialchars($message['message'])); ?></td>
 
-                    <!-- STATUS -->
-                    <td>
-                        <?php
-                        $message_status = strtolower(trim($message['status']));
+                        <!-- STATUS -->
+                        <td>
+                            <?php
+                            $message_status = strtolower(trim($message['status']));
 
-                        if ($message_status == "read") {
-                            echo '<span class="message-status read-status">Read</span>';
-                        } else {
-                            echo '<span class="message-status unread-status">Unread</span>';
-                        }
-                        ?>
-                    </td>
+                            if ($message_status == "read") {
+                                echo '<span class="message-status read-status">Read</span>';
+                            } else {
+                                echo '<span class="message-status unread-status">Unread</span>';
+                            }
+                            ?>
+                        </td>
 
-                    <!-- DATE -->
-                    <td><?php echo date("d M Y", strtotime($message['created_at'])); ?></td>
+                        <!-- DATE -->
+                        <td><?php echo date("d M Y", strtotime($message['created_at'])); ?></td>
 
-                    <!-- ACTIONS -->
-                    <td>
-                        <?php if ($message_status != "read") { ?>
-                            <a href="contact_messages.php?read=<?php echo $message['id']; ?>" class="action read">Mark Read</a>
-                        <?php } ?>
+                        <!-- ACTIONS -->
+                        <td>
+                            <?php if ($message_status != "read") { ?>
+                                <a href="contact_messages.php?read=<?php echo $message['id']; ?>" class="action read">Mark Read</a>
+                            <?php } ?>
 
-                        <a href="contact_messages.php?delete=<?php echo $message['id']; ?>" class="action delete" onclick="return confirm('Delete this message?');">Delete</a>
-                    </td>
-                </tr>
-            <?php
+                            <a href="contact_messages.php?delete=<?php echo $message['id']; ?>" class="action delete" onclick="return confirm('Delete this message?');">Delete</a>
+                        </td>
+                    </tr>
+                <?php
+                    }
+                } else {
+                ?>
+                    <tr>
+                        <td colspan="8">No Contact Messages Found.</td>
+                    </tr>
+                <?php
                 }
-            } else {
-            ?>
-                <tr>
-                    <td colspan="8">No Contact Messages Found.</td>
-                </tr>
-            <?php
-            }
-            ?>
+                ?>
             </tbody>
         </table>
     </div>

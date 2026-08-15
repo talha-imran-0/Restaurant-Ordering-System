@@ -1,84 +1,39 @@
 <?php
 
+session_start();
+
 require_once "../includes/config.php";
+require_once "../php/Auth.php";
 
-// ===========================
-// Check Admin Login
-// ===========================
+/* CHECK ADMIN LOGIN */
+require_admin();
 
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-// ===========================
-// Total Orders
-// ===========================
-
-$get_orders = mysqli_query(
-    $conn,
-    "SELECT COUNT(*) AS total FROM orders"
-);
-
+/* TOTAL ORDERS */
+$get_orders = mysqli_query($conn, "SELECT COUNT(*) AS total FROM orders");
 $total_orders = mysqli_fetch_assoc($get_orders)['total'];
 
-// ===========================
-// Delivered Orders
-// ===========================
-
-$get_delivered = mysqli_query(
-    $conn,
-    "SELECT COUNT(*) AS total FROM orders WHERE order_status='Delivered'"
-);
-
+/* DELIVERED ORDERS */
+$get_delivered = mysqli_query($conn, "SELECT COUNT(*) AS total FROM orders WHERE order_status='Delivered'");
 $total_delivered = mysqli_fetch_assoc($get_delivered)['total'];
 
-// ===========================
-// Pending Orders
-// ===========================
-
-$get_pending = mysqli_query(
-    $conn,
-    "SELECT COUNT(*) AS total FROM orders WHERE order_status='New'"
-);
-
+/* PENDING ORDERS */
+$get_pending = mysqli_query($conn, "SELECT COUNT(*) AS total FROM orders WHERE order_status='New'");
 $total_pending = mysqli_fetch_assoc($get_pending)['total'];
 
-// ===========================
-// Cancelled Orders
-// ===========================
-
-$get_cancelled = mysqli_query(
-    $conn,
-    "SELECT COUNT(*) AS total FROM orders WHERE order_status='Cancelled'"
-);
-
+/* CANCELLED ORDERS */
+$get_cancelled = mysqli_query($conn, "SELECT COUNT(*) AS total FROM orders WHERE order_status='Cancelled'");
 $total_cancelled = mysqli_fetch_assoc($get_cancelled)['total'];
 
-// ===========================
-// Total Revenue
-// ===========================
-
-$get_revenue = mysqli_query(
-    $conn,
-    "SELECT SUM(total) AS revenue FROM orders WHERE payment_status='Paid'"
-);
-
+/* TOTAL REVENUE */
+$get_revenue = mysqli_query($conn, "SELECT SUM(total) AS revenue FROM orders WHERE payment_status='Paid'");
 $total_revenue = mysqli_fetch_assoc($get_revenue)['revenue'];
 
 if ($total_revenue == "") {
     $total_revenue = 0;
 }
 
-// ===========================
-// Total Customers
-// ===========================
-
-$get_customers = mysqli_query(
-    $conn,
-    "SELECT COUNT(*) AS total FROM users WHERE role='customer'"
-);
-
+/* TOTAL CUSTOMERS */
+$get_customers = mysqli_query($conn, "SELECT COUNT(*) AS total FROM users WHERE role='customer'");
 $total_customers = mysqli_fetch_assoc($get_customers)['total'];
 
 ?>
@@ -147,10 +102,7 @@ $total_customers = mysqli_fetch_assoc($get_customers)['total'];
             </thead>
             <tbody>
             <?php
-            $get_recent_orders = mysqli_query(
-                $conn,
-                "SELECT orders.*, users.name FROM orders LEFT JOIN users ON orders.user_id = users.id ORDER BY orders.id DESC LIMIT 10"
-            );
+            $get_recent_orders = mysqli_query($conn, "SELECT orders.*, users.name FROM orders LEFT JOIN users ON orders.user_id = users.id ORDER BY orders.id DESC LIMIT 10");
 
             if (mysqli_num_rows($get_recent_orders) > 0) {
                 while ($order = mysqli_fetch_assoc($get_recent_orders)) {
@@ -183,41 +135,17 @@ $total_customers = mysqli_fetch_assoc($get_customers)['total'];
     <div class="cards">
         <div class="card">
             <h3>Delivery Success Rate</h3>
-            <h2>
-            <?php
-            if ($total_orders > 0) {
-                echo round(($total_delivered / $total_orders) * 100) . "%";
-            } else {
-                echo "0%";
-            }
-            ?>
-            </h2>
+            <h2><?php if ($total_orders > 0) { echo round(($total_delivered / $total_orders) * 100) . "%"; } else { echo "0%"; } ?></h2>
         </div>
 
         <div class="card">
             <h3>Pending Rate</h3>
-            <h2>
-            <?php
-            if ($total_orders > 0) {
-                echo round(($total_pending / $total_orders) * 100) . "%";
-            } else {
-                echo "0%";
-            }
-            ?>
-            </h2>
+            <h2><?php if ($total_orders > 0) { echo round(($total_pending / $total_orders) * 100) . "%"; } else { echo "0%"; } ?></h2>
         </div>
 
         <div class="card">
             <h3>Cancelled Rate</h3>
-            <h2>
-            <?php
-            if ($total_orders > 0) {
-                echo round(($total_cancelled / $total_orders) * 100) . "%";
-            } else {
-                echo "0%";
-            }
-            ?>
-            </h2>
+            <h2><?php if ($total_orders > 0) { echo round(($total_cancelled / $total_orders) * 100) . "%"; } else { echo "0%"; } ?></h2>
         </div>
     </div>
 

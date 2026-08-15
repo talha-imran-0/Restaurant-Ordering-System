@@ -10,163 +10,206 @@ $message = "";
 
 $user_id = $_SESSION["user_id"];
 
-
 /* UPDATE PROFILE */
 
 if (isset($_POST["update_profile"])) {
+    /* REQUIRE CSRF TOKEN */
 
-	$name = trim($_POST["name"]);
-	$email = trim($_POST["email"]);
-	$phone = trim($_POST["phone"]);
+    require_csrf_token();
 
-	if (
-		empty($name) ||
-		empty($email) ||
-		empty($phone)
-	) {
-		$message = "<div class='error-message'>Please fill all fields.</div>";
-	}
-	elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-		$message = "<div class='error-message'>Please enter a valid email address.</div>";
-	}
-	else {
+    $name = trim($_POST["name"] ?? "");
+    $email = trim($_POST["email"] ?? "");
+    $phone = trim($_POST["phone"] ?? "");
 
-		$check_email = mysqli_query($conn, "
-			SELECT id
-			FROM users
-			WHERE email = '$email'
-			AND id != '$user_id'
-			LIMIT 1
-		");
+    if (
+        empty($name) ||
+        empty($email) ||
+        empty($phone)
+    ) {
+        $message = "<div class='error-message'>Please fill all fields.</div>";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message = "<div class='error-message'>Please enter a valid email address.</div>";
+    } elseif (!preg_match("/^[a-zA-Z .'-]+$/", $name)) {
+        $message = "<div class='error-message'>Please enter a valid name.</div>";
+    } elseif (!preg_match("/^[0-9+\-\s()]{7,20}$/", $phone)) {
+        $message = "<div class='error-message'>Please enter a valid phone number.</div>";
+    } else {
+        /* CHECK DUPLICATE EMAIL */
 
-		if (mysqli_num_rows($check_email) > 0) {
+        $check_stmt = mysqli_prepare(
+            $conn,
+            "SELECT id
+             FROM users
+             WHERE email = ?
+             AND id != ?
+             LIMIT 1"
+        );
 
-			$message = "<div class='error-message'>Email already exists.</div>";
+        if (!$check_stmt) {
+            $message = "<div class='error-message'>Something went wrong. Please try again.</div>";
+        } else {
+            mysqli_stmt_bind_param(
+                $check_stmt,
+                "si",
+                $email,
+                $user_id
+            );
 
-		}
-		else {
+            mysqli_stmt_execute($check_stmt);
 
-			$update_user = mysqli_query($conn, "
-				UPDATE users
-				SET
-					name = '$name',
-					email = '$email',
-					phone = '$phone',
-					updated_at = NOW()
-				WHERE id = '$user_id'
-			");
+            $check_email = mysqli_stmt_get_result($check_stmt);
 
-			if ($update_user) {
+            if (mysqli_num_rows($check_email) > 0) {
+                $message = "<div class='error-message'>Email already exists.</div>";
+            } else {
+                /* UPDATE USER PROFILE */
 
-				$_SESSION["user_name"] = $name;
-				$_SESSION["user_email"] = $email;
+                $update_stmt = mysqli_prepare(
+                    $conn,
+                    "UPDATE users
+                     SET
+                        name = ?,
+                        email = ?,
+                        phone = ?,
+                        updated_at = NOW()
+                     WHERE id = ?"
+                );
 
-				$message = "<div class='success-message'>Profile updated successfully.</div>";
+                if (!$update_stmt) {
+                    $message = "<div class='error-message'>Something went wrong.</div>";
+                } else {
+                    mysqli_stmt_bind_param(
+                        $update_stmt,
+                        "sssi",
+                        $name,
+                        $email,
+                        $phone,
+                        $user_id
+                    );
 
-			}
-			else {
+                    if (mysqli_stmt_execute($update_stmt)) {
+                        $_SESSION["user_name"] = $name;
+                        $_SESSION["user_email"] = $email;
 
-				$message = "<div class='error-message'>Something went wrong.</div>";
+                        $message = "<div class='success-message'>Profile updated successfully.</div>";
+                    } else {
+                        $message = "<div class='error-message'>Something went wrong.</div>";
+                    }
 
-			}
-		}
-	}
+                    mysqli_stmt_close($update_stmt);
+                }
+            }
+
+            mysqli_stmt_close($check_stmt);
+        }
+    }
 }
-
 
 /* GET USER */
 
-$get_user = mysqli_query($conn, "
-	SELECT *
-	FROM users
-	WHERE id = '$user_id'
-	LIMIT 1
-");
+$get_stmt = mysqli_prepare(
+    $conn,
+    "SELECT *
+     FROM users
+     WHERE id = ?
+     LIMIT 1"
+);
 
-$user = mysqli_fetch_assoc($get_user);
+$user = null;
+
+if ($get_stmt) {
+    mysqli_stmt_bind_param(
+        $get_stmt,
+        "i",
+        $user_id
+    );
+
+    mysqli_stmt_execute($get_stmt);
+
+    $get_user = mysqli_stmt_get_result($get_stmt);
+
+    $user = mysqli_fetch_assoc($get_user);
+
+    mysqli_stmt_close($get_stmt);
+}
+
+if (!$user) {
+    die("User account not found.");
+}
 
 include "../includes/header.php";
 
 ?>
-	<!-- PAGE BANNER -->
+
+<!-- PAGE BANNER -->
 
 <section class="page-banner">
-	<div class="container">
-		<div class="page-banner-content">
-			<h1>Update Profile</h1>
-			<p><a href="../index.php">Home</a> / Update Profile</p>
-		</div>
-	</div>
+    <div class="container">
+        <div class="page-banner-content">
+            <h1>Update Profile</h1>
+            <p>
+                <a href="../index.php">Home</a> / Update Profile
+            </p>
+        </div>
+    </div>
 </section>
 
-	<!-- UPDATE PROFILE -->
+<!-- UPDATE PROFILE -->
 
 <section class="profile section-padding">
-	<div class="container">
-		<div class="profile-wrapper">
+    <div class="container">
+        <div class="profile-wrapper">
+            <div class="profile-header">
+                <h2>Update Profile</h2>
 
-			<div class="profile-header">
-				<h2>Update Profile</h2>
-				<p>Keep your personal information up to date.</p>
-			</div>
+                <p>
+                    Keep your personal information up to date.
+                </p>
+            </div>
 
-			<?php echo $message; ?>
+            <?php echo $message; ?>
 
-			<form method="POST">
+            <form method="POST">
+                <!-- CSRF TOKEN -->
 
-				<div class="form-group">
-					<label>Full Name</label>
-					<input
-						type="text"
-						name="name"
-						value="<?php echo htmlspecialchars($user["name"]); ?>"
-						required
-					>
-				</div>
+                <?php csrf_input(); ?>
 
-				<div class="form-group">
-					<label>Email Address</label>
-					<input
-						type="email"
-						name="email"
-						value="<?php echo htmlspecialchars($user["email"]); ?>"
-						required
-					>
-				</div>
+                <div class="form-group">
+                    <label>Full Name</label>
 
-				<div class="form-group">
-					<label>Phone Number</label>
-					<input
-						type="text"
-						name="phone"
-						value="<?php echo htmlspecialchars($user["phone"]); ?>"
-						required
-					>
-				</div>
+                    <input type="text" name="name" value="<?php echo htmlspecialchars($user["name"]); ?>" required>
+                </div>
 
-				<div class="profile-buttons">
-					<button
-						type="submit"
-						name="update_profile"
-						class="btn-primary"
-					>
-						<i class="fa-solid fa-floppy-disk"></i> Save Changes
-					</button>
+                <div class="form-group">
+                    <label>Email Address</label>
 
-					<a
-						href="profile.php"
-						class="btn-secondary"
-					>
-						<i class="fa-solid fa-arrow-left"></i> Back
-					</a>
-				</div>
+                    <input type="email" name="email" value="<?php echo htmlspecialchars($user["email"]); ?>" required>
+                </div>
 
-			</form>
+                <div class="form-group">
+                    <label>Phone Number</label>
 
-		</div>
-	</div>
+                    <input type="text" name="phone" value="<?php echo htmlspecialchars($user["phone"]); ?>" required>
+                </div>
+
+                <div class="profile-buttons">
+                    <button type="submit" name="update_profile" class="btn-primary" >
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Changes
+                    </button>
+
+                    <a href="profile.php" class="btn-secondary" >
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </section>
 
 <?php
+
 include "../includes/footer.php";
+
 ?>
