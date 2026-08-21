@@ -88,10 +88,13 @@ $get_menu_items = mysqli_query($conn, "SELECT * FROM menu_items WHERE status = 1
             <?php while ($menu = mysqli_fetch_assoc($get_menu_items)) { ?>
 
                 <div class="menu-card">
-                    <img src="assets/uploads/menu/<?php echo $menu['image']; ?> "alt="<?php echo $menu['name']; ?>">
+                    <img
+                        src="assets/uploads/menu/<?php echo htmlspecialchars($menu['image']); ?>"
+                        alt="<?php echo htmlspecialchars($menu['name']); ?>"
+                    >
                     <div class="menu-content">
-                        <h3><?php echo $menu['name']; ?></h3>
-                        <p><?php echo $menu['description']; ?></p>
+                        <h3><?php echo htmlspecialchars($menu['name']); ?></h3>
+                        <p><?php echo htmlspecialchars($menu['description']); ?></p>
                         <div class="menu-info">
                             <span class="price">$<?php echo number_format($menu['price'], 2); ?></span>
                             <span class="rating">★★★★★</span>

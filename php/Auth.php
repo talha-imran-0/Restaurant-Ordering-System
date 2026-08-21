@@ -16,12 +16,15 @@ function require_login()
 // Check Admin Login
 function require_admin()
 {
-    require_login();
+    if (
+        !isset($_SESSION["admin_id"]) ||
+        !isset($_SESSION["admin_role"]) ||
+        $_SESSION["admin_role"] !== "admin"
+    ) {
 
-    if ($_SESSION["user_role"] != "admin")
-    {
-        header("Location: ../index.php");
+        header("Location: login.php");
         exit();
+
     }
 }
 
