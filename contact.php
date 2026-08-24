@@ -15,7 +15,7 @@ if (isset($_POST["send_message"])) {
         header("Location: customer/login.php");
         exit();
     }
-
+    
     $name = trim($_POST["name"]);
     $email = trim($_POST["email"]);
     $subject = trim($_POST["subject"]);
