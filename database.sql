@@ -55,7 +55,7 @@ VALUES
     'Administrator',
     'admin@urbanbites.com',
     '03000000000',
-    '$2y$12$bli5zcaSLwd8VusUfwYpX.e22MKskxtlQWu.h4ZWkjXbYpInuB4He',
+    '$2y$10$/PYnk10UI59Nz7Nf4JSDzemTdm65kYZSmY5hBhKBbMQES0av/3BPC',
     'admin',
     'active'
 );
